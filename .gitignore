@@ -12,6 +12,8 @@ out/
 .env
 .env.local
 .env.*.local
+# allow example templates
+!*.example
 
 # OS
 .DS_Store
