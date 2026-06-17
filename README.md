@@ -94,6 +94,15 @@ Set production env vars in the Vercel dashboard (frontend) and the trigger.dev d
 
 > **Pushing to `main` deploys only the frontend.** The scoring and scraping run inside the trigger.dev task, so prompt changes go live only after `trigger.dev deploy`.
 
+### Ship everything at once
+
+`ship.sh` commits, pushes (Vercel picks up the frontend), and redeploys the backend task in one step:
+
+```bash
+./ship.sh "your commit message"   # commit with this message
+./ship.sh                          # commit with a timestamped default
+```
+
 ## Change the scoring
 
 The scoring logic lives in code:
