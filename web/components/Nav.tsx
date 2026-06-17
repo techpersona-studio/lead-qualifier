@@ -14,6 +14,50 @@ interface NavProps {
   isAdmin: boolean;
 }
 
+function AgencyLogo() {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 2.5, width: 16, height: 16 }}>
+        <div style={{ background: "var(--accent)", borderRadius: 2, opacity: 0.9 }} />
+        <div style={{ background: "var(--accent)", borderRadius: 2, opacity: 0.35 }} />
+        <div style={{ background: "var(--accent)", borderRadius: 2, opacity: 0.35 }} />
+        <div style={{ background: "var(--accent)", borderRadius: 2, opacity: 0.1 }} />
+      </div>
+      <span>
+        <span style={{
+          fontSize: 10,
+          fontWeight: 700,
+          letterSpacing: "0.22em",
+          textTransform: "uppercase",
+          color: "rgba(240, 237, 232, 0.65)",
+        }}>
+          TechPersona
+        </span>
+        <span style={{
+          fontSize: 10,
+          fontWeight: 700,
+          letterSpacing: "0.22em",
+          textTransform: "uppercase",
+          color: "var(--text-muted)",
+          marginLeft: 5,
+        }}>
+          Studio
+        </span>
+      </span>
+    </div>
+  );
+}
+
+const linkStyle = (active: boolean): React.CSSProperties => ({
+  fontSize: 11,
+  fontWeight: 600,
+  letterSpacing: "0.16em",
+  textTransform: "uppercase",
+  color: active ? "var(--text-primary)" : "var(--text-secondary)",
+  textDecoration: "none",
+  transition: "color 150ms ease",
+});
+
 export function Nav({ workspaces, activeOrgId, isAdmin }: NavProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -54,9 +98,9 @@ export function Nav({ workspaces, activeOrgId, isAdmin }: NavProps) {
         left: 0,
         right: 0,
         height: 56,
-        display: "flex",
+        display: "grid",
+        gridTemplateColumns: "1fr auto 1fr",
         alignItems: "center",
-        justifyContent: "space-between",
         padding: "0 40px",
         zIndex: 20,
         borderBottom: scrolled ? "1px solid rgba(255,255,255,0.08)" : "1px solid transparent",
@@ -65,54 +109,21 @@ export function Nav({ workspaces, activeOrgId, isAdmin }: NavProps) {
         transition: "background 0.2s ease, border-color 0.2s ease",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-        <span className="wordmark">Lead Qualifier</span>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <AgencyLogo />
+      </div>
+
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
         {workspaces.length > 0 && (
           <WorkspaceSwitcher workspaces={workspaces} activeOrgId={activeOrgId} />
         )}
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
-        <Link
-          href="/"
-          style={{
-            fontSize: 11,
-            fontWeight: 600,
-            letterSpacing: "0.16em",
-            textTransform: "uppercase",
-            color: "var(--text-secondary)",
-            textDecoration: "none",
-          }}
-        >
-          New Lead
-        </Link>
-        <Link
-          href="/leads"
-          style={{
-            fontSize: 11,
-            fontWeight: 600,
-            letterSpacing: "0.16em",
-            textTransform: "uppercase",
-            color: "var(--text-secondary)",
-            textDecoration: "none",
-          }}
-        >
-          Leads
-        </Link>
+      <div style={{ display: "flex", alignItems: "center", gap: 32, justifyContent: "flex-end" }}>
+        <Link href="/" style={linkStyle(pathname === "/")}>New Lead</Link>
+        <Link href="/leads" style={linkStyle(pathname === "/leads")}>Leads</Link>
         {isAdmin && (
-          <Link
-            href="/settings/members"
-            style={{
-              fontSize: 11,
-              fontWeight: 600,
-              letterSpacing: "0.16em",
-              textTransform: "uppercase",
-              color: "var(--text-secondary)",
-              textDecoration: "none",
-            }}
-          >
-            Team
-          </Link>
+          <Link href="/settings/members" style={linkStyle(pathname.startsWith("/settings"))}>Team</Link>
         )}
         {showSignOut && (
           <button
