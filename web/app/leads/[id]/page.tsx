@@ -45,7 +45,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       >
         ← Back to leads
       </Link>
-      <QualificationResultCard result={lead.result} onReset={() => {}} />
+      <QualificationResultCard result={lead.result} />
     </main>
   );
 }

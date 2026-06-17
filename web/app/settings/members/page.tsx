@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 import { createServerClient } from "@/lib/supabase/server";
 import { MembersClient } from "./MembersClient";
 
@@ -8,10 +9,15 @@ export default async function MembersPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
+  const cookieStore = await cookies();
+  const orgId = cookieStore.get("active_org_id")?.value ?? null;
+  if (!orgId) redirect("/");
+
   const { data: membership } = await supabase
     .from("org_members")
     .select("org_id, role")
     .eq("user_id", user.id)
+    .eq("org_id", orgId)
     .single();
 
   if (!membership) redirect("/");

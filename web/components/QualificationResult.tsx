@@ -4,7 +4,7 @@ import type { QualificationResult } from "@/types/lead";
 
 interface Props {
   result: QualificationResult;
-  onReset: () => void;
+  onReset?: () => void;
 }
 
 // Score → color: readable white at the low end, bright purple at 100
@@ -500,11 +500,13 @@ export function QualificationResultCard({ result, onReset }: Props) {
       )}
 
       {/* Reset */}
-      <div className="result-reveal result-reveal-5" style={{ display: "flex", justifyContent: "center", paddingTop: 8 }}>
-        <button onClick={onReset} className="btn-secondary">
-          Analyze Another Lead
-        </button>
-      </div>
+      {onReset && (
+        <div className="result-reveal result-reveal-5" style={{ display: "flex", justifyContent: "center", paddingTop: 8 }}>
+          <button onClick={onReset} className="btn-secondary">
+            Analyze Another Lead
+          </button>
+        </div>
+      )}
     </div>
   );
 }
