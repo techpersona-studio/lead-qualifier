@@ -26,7 +26,7 @@ async function getWorkspaceProps() {
   try {
     const supabase = await createServerClient();
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return { workspaces: [], activeOrgId: "" };
+    if (!user) return { workspaces: [], activeOrgId: "", isAdmin: false };
 
     const admin = createClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL!,
