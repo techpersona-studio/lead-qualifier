@@ -38,6 +38,16 @@ Rationale: at a small local business, the person filling out the form is the buy
 
 The trigger task scrapes the lead's website ([`backend/lib/website.ts`](../../backend/lib/website.ts)) and feeds the readable text to the model before scoring. This resolves vague form fields (e.g. industry "Other") and drives the effort estimate. A template restaurant site signals low-effort, high-margin work even at a small budget.
 
+## We sell with confidence, not just react to the request
+
+The form says what the lead thinks they want. The website says what we can actually sell them. The model reads the site first, forms a view of the business (what they do, who they sell to, how they win customers), then names the concrete service we'd bring and the outcome it drives. A coaching or service site on a manual "contact us" funnel is an opening for conversion optimization plus sales and support automation, even when the form only asked for a redesign.
+
+This shapes two outputs:
+- **Fit** rewards a specific service angle. "We'd automate their consult-request intake" is strong. "We could probably help" is weak, even when the use case sounds aligned.
+- **Summary** describes the business and our pitch, not the form fields, and notes a company-name/site mismatch when one shows up.
+
+The website is optional on the form. When it's present, it's the ground truth: read it first and ground both fit and summary in concrete site details. When it's absent, infer the business and the opportunity from the industry and use case, flag "No website provided" so the gap is visible, and still give the best analysis. A missing site lowers confidence, not the fit score itself; the lead is never penalized for omitting an optional field.
+
 ## Where the philosophy lives in code
 
 | Concern | File |

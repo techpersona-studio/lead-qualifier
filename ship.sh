@@ -30,5 +30,8 @@ git push origin "$BRANCH"
 # ── 2. Redeploy the backend task to trigger.dev ────────────────────
 echo "→ Deploying backend task to trigger.dev…"
 ( cd backend && npx trigger.dev@latest deploy )
+# npx trigger.dev@latest deploy	prod (default)
+# npx trigger.dev@latest deploy --env staging	staging
+# npx trigger.dev@latest dev	dev (local, the one you run while developing)
 
 echo "✓ Shipped. Frontend via Vercel, backend on trigger.dev."
