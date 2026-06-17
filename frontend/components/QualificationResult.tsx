@@ -102,6 +102,7 @@ function BubbleField({
       ref={fieldRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
+      className="bubble-field-enter"
       style={{
         position: "absolute",
         inset: 0,
