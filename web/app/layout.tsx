@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Syne, Geist_Mono } from "next/font/google";
+import { Nav } from "@/components/Nav";
 import "./globals.css";
 
 const syne = Syne({
@@ -28,7 +29,10 @@ export default function RootLayout({
       lang="en"
       className={`${syne.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="h-full">{children}</body>
+      <body className="h-full">
+        <Nav />
+        {children}
+      </body>
     </html>
   );
 }

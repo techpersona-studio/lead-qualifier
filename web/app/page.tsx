@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import { LeadForm } from "@/components/LeadForm";
 import { QualificationResultCard } from "@/components/QualificationResult";
 import { ParticleCanvas } from "@/components/ParticleCanvas";
@@ -11,9 +12,12 @@ type View = "form" | "analyzing" | "result";
 export default function Home() {
   const [view, setView] = useState<View>("form");
   const [result, setResult] = useState<QualificationResult | null>(null);
+  const [leadId, setLeadId] = useState<string | null>(null);
 
-  const handleResult = (r: QualificationResult) => {
-    setResult(r);
+  const handleResult = (r: QualificationResult & { id?: string }) => {
+    const { id, ...rest } = r;
+    setLeadId(id ?? null);
+    setResult(rest as QualificationResult);
     setView("result");
   };
 
@@ -23,6 +27,7 @@ export default function Home() {
 
   const handleReset = () => {
     setResult(null);
+    setLeadId(null);
     setView("form");
   };
 
@@ -45,18 +50,6 @@ export default function Home() {
           zIndex: 0,
         }}
       />
-
-      {/* Fixed wordmark */}
-      <div
-        style={{
-          position: "fixed",
-          top: 32,
-          left: 40,
-          zIndex: 10,
-        }}
-      >
-        <span className="wordmark">Lead Qualifier</span>
-      </div>
 
       {/* Centered content — vertically centered on viewport */}
       <main
@@ -124,6 +117,23 @@ export default function Home() {
           {view === "result" && result && (
             <div key="result" className="view-in">
               <QualificationResultCard result={result} onReset={handleReset} />
+              {leadId && (
+                <div style={{ display: "flex", justifyContent: "center", marginTop: 16 }}>
+                  <Link
+                    href={`/leads/${leadId}`}
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 600,
+                      letterSpacing: "0.16em",
+                      textTransform: "uppercase",
+                      color: "var(--text-muted)",
+                      textDecoration: "none",
+                    }}
+                  >
+                    View in history →
+                  </Link>
+                </div>
+              )}
             </div>
           )}
 
