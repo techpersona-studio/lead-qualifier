@@ -5,7 +5,8 @@ import type { LeadFormData } from "@/types/lead";
 export async function POST(req: NextRequest) {
   const body: LeadFormData = await req.json();
 
-  const handle = await tasks.triggerAndWait<LeadFormData>("qualify-lead", body, {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handle = await tasks.triggerAndWait<any>("qualify-lead", body, {
     tags: ["lead-qualifier"],
   });
 

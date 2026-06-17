@@ -1,34 +1,122 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-left: #FAF8F5;
+  --bg-right: #F5F1EC;
+  --divider: #E5DDD5;
+  --border-input: #D6CFC7;
+  --accent: #C96A2E;
+  --text-primary: #1C1917;
+  --text-secondary: #57534E;
+  --text-muted: #A8A29E;
+  --text-dim: #78716C;
+  --text-body: #44403C;
+  --grade-a: #2D6A4F;
+  --grade-b: #1D4E89;
+  --grade-c: #92400E;
+  --grade-d: #7F1D1D;
+  --bar-bg: #E5DDD5;
+  --flag-bg: #FEF3C7;
+  --flag-text: #92400E;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --font-serif: var(--font-dm-serif);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg-left);
+  color: var(--text-primary);
+  font-family: var(--font-geist-sans), sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
-.input {
-  @apply w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500;
+/* Input field: bottom-border only, terracotta on focus */
+.input-field {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-input);
+  border-radius: 0;
+  padding: 8px 0 8px 2px;
+  font-size: 15px;
+  color: var(--text-primary);
+  font-family: var(--font-geist-sans), sans-serif;
+  transition: border-color 200ms ease;
+  outline: none;
 }
 
-.btn-primary {
-  @apply bg-blue-600 text-white rounded-lg px-4 py-2 font-medium hover:bg-blue-700 transition-colors;
+.input-field:focus {
+  border-bottom-color: var(--accent);
+  box-shadow: none;
+}
+
+.input-field::placeholder {
+  color: var(--text-muted);
+}
+
+/* Analyze button */
+.btn-analyze {
+  width: 100%;
+  height: 48px;
+  background: var(--text-primary);
+  color: var(--bg-left);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 200ms ease, opacity 200ms ease;
+}
+
+.btn-analyze:hover:not(:disabled) {
+  background: #2D2926;
+}
+
+.btn-analyze:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Result card entry animation */
+@keyframes resultEnter {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.result-enter {
+  animation: resultEnter 300ms ease forwards;
+}
+
+/* Dimension bar fill animation */
+@keyframes barFill {
+  from { width: 0%; }
+  to { width: var(--bar-target-width); }
+}
+
+.dim-bar-fill {
+  height: 5px;
+  background: var(--bar-color);
+  animation: barFill 400ms ease-out forwards;
+  animation-delay: var(--bar-delay, 0ms);
+  width: 0%;
+}
+
+/* Button loading pulse */
+@keyframes loadingPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.btn-loading {
+  animation: loadingPulse 1.4s ease-in-out infinite;
 }
