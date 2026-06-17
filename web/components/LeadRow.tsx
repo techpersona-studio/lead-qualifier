@@ -1,3 +1,5 @@
+"use client";
+import { useRouter } from "next/navigation";
 import type { QualificationResult } from "@/types/lead";
 
 interface Lead {
@@ -23,7 +25,8 @@ const GRADE_LABEL: Record<string, string> = {
   D: "Cold",
 };
 
-export function LeadRow({ lead }: { lead: Lead }) {
+export function LeadRow({ lead, href }: { lead: Lead; href: string }) {
+  const router = useRouter();
   const color = GRADE_COLOR[lead.grade] ?? "var(--text-muted)";
   const date = new Date(lead.created_at).toLocaleDateString("en-US", {
     month: "short",
@@ -34,6 +37,7 @@ export function LeadRow({ lead }: { lead: Lead }) {
   return (
     <tr
       data-testid="lead-row"
+      onClick={() => router.push(href)}
       style={{
         borderBottom: "1px solid rgba(255,255,255,0.05)",
         cursor: "pointer",

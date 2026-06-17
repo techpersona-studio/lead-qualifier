@@ -1,5 +1,4 @@
 import { redirect } from "next/navigation";
-import Link from "next/link";
 import { cookies } from "next/headers";
 import { createServerClient } from "@/lib/supabase/server";
 import { LeadRow } from "@/components/LeadRow";
@@ -66,9 +65,7 @@ export default async function LeadsPage() {
           </thead>
           <tbody>
             {leads.map((lead) => (
-              <Link key={lead.id} href={`/leads/${lead.id}`} legacyBehavior>
-                <LeadRow lead={lead} />
-              </Link>
+              <LeadRow key={lead.id} lead={lead} href={`/leads/${lead.id}`} />
             ))}
           </tbody>
         </table>
