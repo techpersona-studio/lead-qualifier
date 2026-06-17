@@ -25,11 +25,17 @@ export default async function MembersPage() {
 
   if (!membership) redirect("/");
 
-  const { data: members } = await admin
-    .from("org_members")
-    .select("id, role, user_id, created_at")
-    .eq("org_id", membership.org_id)
-    .order("created_at", { ascending: true });
+  const [membersResult, orgResult] = await Promise.all([
+    admin
+      .from("org_members")
+      .select("id, role, user_id, created_at")
+      .eq("org_id", membership.org_id)
+      .order("created_at", { ascending: true }),
+    admin.from("orgs").select("name").eq("id", membership.org_id).single(),
+  ]);
+
+  const members = membersResult.data;
+  const orgName = orgResult.data?.name ?? "Workspace";
 
   return (
     <main style={{ padding: "96px 40px 60px", maxWidth: 700, margin: "0 auto" }}>
@@ -51,6 +57,8 @@ export default async function MembersPage() {
         members={members ?? []}
         isAdmin={membership.role === "admin"}
         currentUserId={user.id}
+        orgId={membership.org_id}
+        orgName={orgName}
       />
     </main>
   );

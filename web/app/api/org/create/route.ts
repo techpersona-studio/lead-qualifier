@@ -7,16 +7,6 @@ export async function POST(req: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  // Idempotent — if they already have an org, return it
-  const { data: existingRows } = await supabase
-    .from("org_members")
-    .select("org_id")
-    .eq("user_id", user.id)
-    .limit(1);
-
-  const existing = existingRows?.[0] ?? null;
-  if (existing) return NextResponse.json({ orgId: existing.org_id });
-
   const { name } = await req.json();
   if (!name?.trim()) return NextResponse.json({ error: "Name required" }, { status: 400 });
 
@@ -36,5 +26,7 @@ export async function POST(req: NextRequest) {
 
   if (memberError) return NextResponse.json({ error: memberError.message }, { status: 500 });
 
-  return NextResponse.json({ orgId: org.id });
+  const res = NextResponse.json({ orgId: org.id });
+  res.cookies.set("active_org_id", org.id, { httpOnly: true, sameSite: "lax", path: "/" });
+  return res;
 }
