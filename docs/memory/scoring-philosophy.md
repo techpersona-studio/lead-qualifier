@@ -1,6 +1,6 @@
 # Lead scoring philosophy
 
-How this agency decides whether a lead is worth sales time. These principles drive the prompt in [`backend/prompts/lead-qualifier.ts`](../../backend/prompts/lead-qualifier.ts) and the rubric in [`Workflows/scoring-rubric.md`](../../Workflows/scoring-rubric.md). Keep all three in sync when scoring logic changes.
+How this agency decides whether a lead is worth sales time. These principles drive the live system prompt in [`backend/prompts/lead-qualifier.ts`](../../backend/prompts/lead-qualifier.ts). That `.ts` is the single source of truth for scoring; this doc holds the rationale behind it.
 
 ## Who we are
 
@@ -42,9 +42,8 @@ The trigger task scrapes the lead's website ([`backend/lib/website.ts`](../../ba
 
 | Concern | File |
 |---------|------|
-| System prompt the model runs on | `backend/prompts/lead-qualifier.ts` |
-| Human-readable rubric (must mirror the prompt) | `Workflows/scoring-rubric.md` |
+| System prompt the model runs on (source of truth) | `backend/prompts/lead-qualifier.ts` |
 | Website scrape feeding context | `backend/lib/website.ts` |
 | Output schema + validation | `backend/lib/scorer.ts`, `backend/types/lead.ts` |
 
-When you change scoring, edit the prompt and the rubric together, then redeploy the backend (`cd backend && npx trigger.dev@latest deploy`).
+When you change scoring, edit the prompt, then redeploy the backend (`cd backend && npx trigger.dev@latest deploy`).
