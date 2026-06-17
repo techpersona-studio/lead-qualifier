@@ -29,7 +29,7 @@ export default function RootLayout({
       lang="en"
       className={`${syne.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="h-full">
+      <body className="h-full" suppressHydrationWarning>
         <Nav />
         {children}
       </body>
