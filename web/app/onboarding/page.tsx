@@ -8,13 +8,13 @@ export default async function OnboardingPage() {
   if (!user) redirect("/login");
 
   // Already has an org — skip onboarding
-  const { data: membership } = await supabase
+  const { data: memberships } = await supabase
     .from("org_members")
     .select("org_id")
     .eq("user_id", user.id)
-    .single();
+    .limit(1);
 
-  if (membership) redirect("/");
+  if (memberships?.[0]) redirect("/");
 
   return (
     <main

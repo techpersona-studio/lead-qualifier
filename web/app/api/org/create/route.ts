@@ -8,12 +8,13 @@ export async function POST(req: NextRequest) {
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   // Idempotent — if they already have an org, return it
-  const { data: existing } = await supabase
+  const { data: existingRows } = await supabase
     .from("org_members")
     .select("org_id")
     .eq("user_id", user.id)
-    .single();
+    .limit(1);
 
+  const existing = existingRows?.[0] ?? null;
   if (existing) return NextResponse.json({ orgId: existing.org_id });
 
   const { name } = await req.json();

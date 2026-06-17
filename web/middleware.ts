@@ -66,15 +66,17 @@ export async function middleware(request: NextRequest) {
     console.error("[middleware] SUPABASE_SERVICE_ROLE_KEY is not set");
   }
 
-  const { data: membership, error: membershipError } = await admin
+  const { data: memberships, error: membershipError } = await admin
     .from("org_members")
     .select("org_id")
     .eq("user_id", user.id)
-    .single();
+    .limit(1);
 
-  if (membershipError && membershipError.code !== "PGRST116") {
+  if (membershipError) {
     console.error("[middleware] org_members query error:", membershipError.message, membershipError.code);
   }
+
+  const membership = memberships?.[0] ?? null;
 
   if (!membership) {
     console.warn("[middleware] no membership for user", user.id, "on path", pathname);
