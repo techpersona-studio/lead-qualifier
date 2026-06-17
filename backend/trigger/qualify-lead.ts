@@ -1,8 +1,8 @@
 import { task, logger } from "@trigger.dev/sdk/v3";
-import { qualifyLead } from "../lib/claude";
-import { validateResult } from "../lib/scorer";
-import { fetchWebsiteContext } from "../lib/website";
-import type { LeadFormData, QualificationResult } from "../types/lead";
+import { qualifyLead } from "../lib/claude.js";
+import { validateResult } from "../lib/scorer.js";
+import { fetchWebsiteContext } from "../lib/website.js";
+import type { LeadFormData, QualificationResult } from "../types/lead.js";
 
 export const qualifyLeadTask = task({
   id: "qualify-lead",

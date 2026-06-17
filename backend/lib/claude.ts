@@ -1,8 +1,8 @@
 import AnthropicBedrock from "@anthropic-ai/bedrock-sdk";
 import OpenAI from "openai";
 import { logger } from "@trigger.dev/sdk/v3";
-import type { LeadFormData, QualificationResult } from "../types/lead";
-import { SYSTEM_PROMPT, buildUserMessage } from "../prompts/lead-qualifier";
+import type { LeadFormData, QualificationResult } from "../types/lead.js";
+import { SYSTEM_PROMPT, buildUserMessage } from "../prompts/lead-qualifier.js";
 
 async function qualifyWithClaude(lead: LeadFormData, websiteText?: string): Promise<string> {
   const client = new AnthropicBedrock();

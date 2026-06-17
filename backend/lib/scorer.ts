@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { QualificationResult } from "../types/lead";
+import type { QualificationResult } from "../types/lead.js";
 
 const QualificationResultSchema = z.object({
   score: z.number().min(0).max(100),

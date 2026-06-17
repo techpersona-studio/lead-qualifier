@@ -53,9 +53,6 @@ function CustomSelect({
   const open = openId === id;
   const triggerRef = useRef<HTMLButtonElement>(null);
   const [panelRect, setPanelRect] = useState<{ top: number; left: number; width: number } | null>(null);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => { setMounted(true); }, []);
 
   const updateRect = useCallback(() => {
     if (triggerRef.current) {
@@ -125,8 +122,9 @@ function CustomSelect({
         </svg>
       </button>
 
-      {/* Portal: overlay + panel rendered on document.body — escapes all stacking contexts */}
-      {mounted && open && panelRect && createPortal(
+      {/* Portal: overlay + panel rendered on document.body — escapes all stacking contexts.
+          open only becomes true on a client click, so this never renders during SSR. */}
+      {open && panelRect && createPortal(
         <>
           {/* Overlay blocks all pointer events to the rest of the page */}
           <div
@@ -217,26 +215,30 @@ function Field({ label, children, delay }: { label: string; children: React.Reac
 
 // ── Form ──────────────────────────────────────────
 export function LeadForm({ onResult, onAnalyzing }: Props) {
-  const [form, setForm] = useState<LeadFormData>({
+  // useCase is derived from the chips at submit time, so it lives outside form state.
+  const [form, setForm] = useState<Omit<LeadFormData, "useCase">>({
     companyName: "",
     contactName: "",
     industry: "",
     companySize: "",
     budgetRange: "",
     urgency: "",
-    useCase: "",
     websiteUrl: "",
   });
 
   const [openId, setOpenId] = useState<string | null>(null);
 
   // Use-case is captured as multi-select chips + an optional "Other" free-text field.
-  // The derived string lands in form.useCase via the effect below.
   const [selectedUseCases, setSelectedUseCases] = useState<string[]>([]);
   const [otherActive, setOtherActive] = useState(false);
   const [otherText, setOtherText] = useState("");
 
-  const setField = (field: keyof LeadFormData) => (v: string) =>
+  // "Other" text overrides chip selection; otherwise join the selected chips.
+  const useCase = otherActive && otherText.trim()
+    ? otherText.trim()
+    : selectedUseCases.join("; ");
+
+  const setField = (field: keyof typeof form) => (v: string) =>
     setForm((prev) => ({ ...prev, [field]: v }));
 
   const toggleUseCase = (option: string) =>
@@ -244,15 +246,7 @@ export function LeadForm({ onResult, onAnalyzing }: Props) {
       prev.includes(option) ? prev.filter((o) => o !== option) : [...prev, option]
     );
 
-  // "Other" text overrides chip selection; otherwise join selected chips.
-  useEffect(() => {
-    const useCase = otherActive && otherText.trim()
-      ? otherText.trim()
-      : selectedUseCases.join("; ");
-    setForm((prev) => ({ ...prev, useCase }));
-  }, [selectedUseCases, otherActive, otherText]);
-
-  const setInput = (field: keyof LeadFormData) =>
+  const setInput = (field: keyof typeof form) =>
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
       setForm((prev) => ({ ...prev, [field]: e.target.value }));
 
@@ -260,10 +254,11 @@ export function LeadForm({ onResult, onAnalyzing }: Props) {
     e.preventDefault();
     onAnalyzing(true);
     try {
+      const payload: LeadFormData = { ...form, useCase };
       const res = await fetch("/api/qualify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       });
       const data = await res.json();
       onResult(data);

@@ -1,4 +1,4 @@
-import type { LeadFormData } from "../types/lead";
+import type { LeadFormData } from "../types/lead.js";
 
 export const SYSTEM_PROMPT = `You are an expert agency lead qualification assistant.
 
