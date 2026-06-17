@@ -60,6 +60,7 @@ export function OnboardingForm() {
       <button
         type="submit"
         disabled={loading || !name.trim()}
+        data-loading={loading}
         className="btn-primary"
       >
         {loading ? "Creating…" : "Create workspace"}

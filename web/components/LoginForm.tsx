@@ -73,6 +73,7 @@ export function LoginForm() {
         type="submit"
         data-testid="signin-button"
         disabled={loading}
+        data-loading={loading}
         className="btn-primary"
       >
         {loading ? "Signing in…" : "Sign in"}

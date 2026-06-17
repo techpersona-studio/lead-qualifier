@@ -79,15 +79,21 @@ export function Nav({ workspaces, activeOrgId, isAdmin }: NavProps) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const [signingOut, setSigningOut] = useState(false);
   const { showNav, showSignOut } = getNavVisibility(pathname, user);
 
   if (!showNav) return null;
 
   const handleSignOut = async () => {
-    const supabase = createClient();
-    await supabase.auth.signOut();
-    router.push("/login");
-    router.refresh();
+    setSigningOut(true);
+    try {
+      const supabase = createClient();
+      await supabase.auth.signOut();
+      router.push("/login");
+      router.refresh();
+    } finally {
+      setSigningOut(false);
+    }
   };
 
   return (
@@ -129,10 +135,12 @@ export function Nav({ workspaces, activeOrgId, isAdmin }: NavProps) {
           <button
             data-testid="signout-button"
             onClick={handleSignOut}
+            disabled={signingOut}
+            data-loading={signingOut}
             className="btn-secondary"
             style={{ padding: "8px 18px", fontSize: 10 }}
           >
-            Sign out
+            {signingOut ? "Signing out…" : "Sign out"}
           </button>
         )}
       </div>

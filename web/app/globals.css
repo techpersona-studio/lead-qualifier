@@ -160,7 +160,8 @@ body::before {
     0 0 40px rgba(140, 132, 240, 0.08);
 }
 
-.btn-primary:active {
+.btn-primary:active,
+.btn-primary[data-loading="true"] {
   transform: scale(0.992);
 }
 
@@ -198,7 +199,8 @@ body::before {
   color: var(--text-primary);
 }
 
-.btn-secondary:active {
+.btn-secondary:active,
+.btn-secondary[data-loading="true"] {
   transform: scale(0.992);
 }
 

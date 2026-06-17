@@ -227,6 +227,7 @@ export function LeadForm({ onResult, onAnalyzing }: Props) {
   });
 
   const [openId, setOpenId] = useState<string | null>(null);
+  const [submitting, setSubmitting] = useState(false);
 
   // Use-case is captured as multi-select chips + an optional "Other" free-text field.
   const [selectedUseCases, setSelectedUseCases] = useState<string[]>([]);
@@ -252,6 +253,7 @@ export function LeadForm({ onResult, onAnalyzing }: Props) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitting(true);
     onAnalyzing(true);
     try {
       const payload: LeadFormData = { ...form, useCase };
@@ -263,6 +265,7 @@ export function LeadForm({ onResult, onAnalyzing }: Props) {
       const data = await res.json();
       onResult(data);
     } finally {
+      setSubmitting(false);
       onAnalyzing(false);
     }
   };
@@ -340,8 +343,8 @@ export function LeadForm({ onResult, onAnalyzing }: Props) {
       </Field>
 
       <div className="fade-up fade-up-7" style={{ paddingTop: 8 }}>
-        <button type="submit" className="btn-primary">
-          Analyze Lead
+        <button type="submit" disabled={submitting} data-loading={submitting} className="btn-primary">
+          {submitting ? "Analyzing…" : "Analyze Lead"}
         </button>
       </div>
     </form>

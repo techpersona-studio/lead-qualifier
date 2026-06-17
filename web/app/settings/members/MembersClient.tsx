@@ -188,6 +188,7 @@ export function MembersClient({ members: initial, isAdmin, currentUserId, orgId,
             <button
               type="submit"
               disabled={inviteStatus === "sending"}
+              data-loading={inviteStatus === "sending"}
               className="btn-secondary"
               style={{ padding: "12px 24px", flexShrink: 0 }}
             >
@@ -284,6 +285,7 @@ export function MembersClient({ members: initial, isAdmin, currentUserId, orgId,
                 <button
                   onClick={handleDeleteWorkspace}
                   disabled={deleting}
+                  data-loading={deleting}
                   style={{
                     fontSize: 10,
                     fontWeight: 600,
