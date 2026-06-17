@@ -27,8 +27,8 @@ export async function middleware(request: NextRequest) {
         setAll: (toSet) => {
           // Write refreshed tokens into the request so the DB query below
           // runs with the new JWT, then mirror them to the response.
-          for (const { name, value, options } of toSet) {
-            request.cookies.set(name, value, options);
+          for (const { name, value } of toSet) {
+            request.cookies.set(name, value);
           }
           response = NextResponse.next({ request });
           for (const { name, value, options } of toSet) {
