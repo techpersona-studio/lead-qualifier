@@ -10,14 +10,24 @@ export default async function LeadsPage() {
   if (!user) redirect("/login");
 
   const cookieStore = await cookies();
-  const orgId = cookieStore.get("active_org_id")?.value ?? null;
-  const membership = orgId ? { org_id: orgId } : null;
+  let orgId = cookieStore.get("active_org_id")?.value ?? null;
 
-  const leads = membership
+  // Cookie may not be set yet on the first render after login. Fall back to the
+  // first org membership so the leads list isn't silently empty.
+  if (!orgId) {
+    const { data: memberships } = await supabase
+      .from("org_members")
+      .select("org_id")
+      .eq("user_id", user.id)
+      .limit(1);
+    orgId = memberships?.[0]?.org_id ?? null;
+  }
+
+  const leads = orgId
     ? (await supabase
         .from("leads")
         .select("id, company_name, contact_name, grade, score, created_at")
-        .eq("org_id", membership.org_id)
+        .eq("org_id", orgId)
         .order("created_at", { ascending: false })
       ).data ?? []
     : [];
