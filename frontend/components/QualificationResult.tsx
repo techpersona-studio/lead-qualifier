@@ -126,11 +126,11 @@ function BubbleField({
               top,
               minWidth: b.size,
               minHeight: b.size,
-              maxWidth: 160,
+              maxWidth: 200,
               width: "auto",
               height: "auto",
-              padding: "10px 16px",
-              borderRadius: "50%",
+              padding: "12px 22px",
+              borderRadius: "50% / 60%",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -155,8 +155,8 @@ function BubbleField({
               // surface toward the viewer (full scale, sharp, opaque). The float
               // keyframe reads --bubble-scale so depth survives the animation.
               "--bubble-scale": isHov ? 1 : 0.88,
-              filter: isHov ? "blur(0px)" : "blur(0.6px)",
-              opacity: isHov ? 1 : 0.78,
+              filter: isHov ? "blur(0px)" : "blur(0.2px)",
+              opacity: isHov ? 1 : 0.85,
               zIndex: isHov ? 10 : 1,
             } as React.CSSProperties}
           >
@@ -382,6 +382,50 @@ export function QualificationResultCard({ result, onReset }: Props) {
           {result.summary}
         </p>
       </div>
+
+      {/* Recommended Action — the headline decision */}
+      {result.recommendedAction && (
+        <div className="result-reveal result-reveal-2">
+          <div
+            style={{
+              fontSize: 9,
+              fontWeight: 700,
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+              color: "rgba(240,237,232,0.28)",
+              marginBottom: 14,
+            }}
+          >
+            Recommended Action
+          </div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              gap: 14,
+              background: `${color}0a`,
+              border: `1px solid ${color}26`,
+              borderRadius: 4,
+              padding: "16px 20px",
+            }}
+          >
+            <div
+              style={{
+                width: 6,
+                height: 6,
+                borderRadius: "50%",
+                background: color,
+                boxShadow: glow !== "none" ? `0 0 8px ${color}` : "none",
+                marginTop: 7,
+                flexShrink: 0,
+              }}
+            />
+            <p style={{ fontSize: 15, lineHeight: 1.7, color: "rgba(240,237,232,0.82)" }}>
+              {result.recommendedAction}
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Breakdown */}
       <div className="result-reveal result-reveal-3">

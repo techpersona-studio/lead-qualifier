@@ -100,8 +100,8 @@ Schema:
   "flags": string[] (risk factors or missing info, e.g. "No budget specified", "Timeline missing", "Decision maker unknown", "Requirements too vague", "May be seeking DIY advice only", "Budget below agency minimum"; empty array if none)
 }`;
 
-export function buildUserMessage(lead: LeadFormData): string {
-  return `Company: ${lead.companyName}
+export function buildUserMessage(lead: LeadFormData, websiteText?: string): string {
+  const fields = `Company: ${lead.companyName}
 Contact: ${lead.contactName}
 Industry: ${lead.industry}
 Company size: ${lead.companySize}
@@ -109,4 +109,17 @@ Budget range: ${lead.budgetRange}
 Timeline / urgency: ${lead.urgency}
 Use case: ${lead.useCase}
 ${lead.websiteUrl ? `Website: ${lead.websiteUrl}` : ""}`.trim();
+
+  if (!websiteText) {
+    return fields;
+  }
+
+  // The scraped page is the ground truth for what the business actually does.
+  // Use it to correct vague form fields like industry "Other".
+  return `${fields}
+
+--- Website content (scraped from ${lead.websiteUrl}) ---
+${websiteText}
+
+Use the website content above to determine the real industry and what the business does, even when the submitted industry field is vague or says "Other".`;
 }
