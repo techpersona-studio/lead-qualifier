@@ -62,6 +62,10 @@ export async function middleware(request: NextRequest) {
     { auth: { autoRefreshToken: false, persistSession: false } }
   );
 
+  if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    console.error("[middleware] SUPABASE_SERVICE_ROLE_KEY is not set");
+  }
+
   const { data: membership, error: membershipError } = await admin
     .from("org_members")
     .select("org_id")
