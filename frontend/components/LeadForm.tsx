@@ -303,7 +303,7 @@ export function LeadForm({ onResult, onAnalyzing }: Props) {
         </Field>
       </div>
 
-      <Field label="What do you need help with?" delay={5}>
+      <Field label="Tell us your pain point or use case." delay={5}>
         <div className="chip-row">
           {USE_CASE_OPTIONS.map((option) => {
             const selected = selectedUseCases.includes(option);
