@@ -1,10 +1,27 @@
 "use client";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/browser";
+import { getNavVisibility } from "@/lib/nav";
 
 export function Nav() {
   const router = useRouter();
+  const pathname = usePathname();
+  const [user, setUser] = useState<{ id: string } | null>(null);
+
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data }) => setUser(data.user as { id: string } | null));
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user as { id: string } | null ?? null);
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const { showNav, showSignOut } = getNavVisibility(pathname, user);
+
+  if (!showNav) return null;
 
   const handleSignOut = async () => {
     const supabase = createClient();
@@ -60,14 +77,16 @@ export function Nav() {
         >
           Leads
         </Link>
-        <button
-          data-testid="signout-button"
-          onClick={handleSignOut}
-          className="btn-secondary"
-          style={{ padding: "8px 18px", fontSize: 10 }}
-        >
-          Sign out
-        </button>
+        {showSignOut && (
+          <button
+            data-testid="signout-button"
+            onClick={handleSignOut}
+            className="btn-secondary"
+            style={{ padding: "8px 18px", fontSize: 10 }}
+          >
+            Sign out
+          </button>
+        )}
       </div>
     </nav>
   );
