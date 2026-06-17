@@ -15,17 +15,40 @@
 
 ## Budget (0-10)
 
-Estimate whether the lead can realistically afford professional implementation services.
+Score the **fit between budget and scope**, not the dollar figure alone. The same budget is strong for simple work and weak for complex work. As a new agency competing on quality at a fair price, small well-scoped projects are wins, not weak leads. Use the scraped website to judge project complexity.
+
+**Simple work** (template or builder sites, restaurant and small-business sites, landing pages, basic redesigns):
+
+| Score | Budget |
+|-------|--------|
+| 10 | $1,500+ |
+| 9 | $1,000-$1,500 |
+| 8 | $500-$1,000 |
+| 6 | $300-$500 |
+| 3 | Under $300 |
+
+**Medium work** (custom builds, multi-page custom design, conversion optimization, e-commerce, CRM/tool setup):
 
 | Score | Budget |
 |-------|--------|
 | 10 | $5,000+ |
-| 8 | $2,000-$5,000 |
-| 6 | $1,000-$2,000 |
+| 9 | $3,000-$5,000 |
+| 7 | $2,000-$3,000 |
+| 5 | $1,000-$2,000 |
 | 3 | $500-$1,000 |
-| 0 | Under $500 |
+| 1 | Under $500 |
 
-Treat budgets below $1,000 as weak unless there is clear strategic value.
+**Complex work** (process automation, AI workflows, sales/support automation, integrations, custom platforms):
+
+| Score | Budget |
+|-------|--------|
+| 10 | $8,000+ |
+| 8 | $5,000-$8,000 |
+| 6 | $3,000-$5,000 |
+| 3 | $1,000-$3,000 |
+| 1 | Under $1,000 |
+
+Only treat budgets under $300 as weak across the board. Don't flag "budget below agency minimum" when the budget reasonably matches simple scope.
 
 ## Urgency (0-10)
 
@@ -75,7 +98,7 @@ Examples:
 - "Schedule discovery call. Good fit but requirements need clarification."
 - "Qualify budget first. Project appears valuable but spending authority is unclear."
 - "Nurture for later. Moderate interest but urgency is low."
-- "Disqualify. Budget appears below agency minimum and buying intent is weak."
+- "Disqualify. Budget is far below what the requested scope requires and buying intent is weak."
 
 ## nextSteps
 
@@ -91,4 +114,4 @@ Risk factors or missing information, such as:
 - "Decision maker unknown"
 - "Requirements too vague"
 - "May be seeking DIY advice only"
-- "Budget below agency minimum"
+- "Budget too low for requested scope"
