@@ -7,7 +7,7 @@
 }
 
 :root {
-  --bg: #05080f;
+  --bg: #0d1120;
   --bg-card: rgba(255, 255, 255, 0.03);
   --bg-card-hover: rgba(255, 255, 255, 0.05);
   --border: rgba(255, 255, 255, 0.08);
@@ -163,13 +163,13 @@ body::before {
 }
 
 .field-input option {
-  background: #11131c;
+  background: #161929;
   color: rgba(240, 237, 232, 0.7);
 }
 
 .field-input option:hover,
 .field-input option:checked {
-  background: #1a1d2a;
+  background: #1e2235;
   color: rgba(240, 237, 232, 0.9);
 }
 
@@ -197,7 +197,7 @@ body::before {
 }
 
 .btn-primary:hover {
-  background: #0e1018;
+  background: #141828;
   border-color: rgba(180, 172, 255, 0.45);
   box-shadow:
     0 0 0 1px rgba(160, 152, 255, 0.15),
@@ -235,7 +235,7 @@ body::before {
 }
 
 .btn-secondary:hover {
-  background: #0e1018;
+  background: #141828;
   border-color: rgba(180, 172, 255, 0.45);
   box-shadow:
     0 0 0 1px rgba(160, 152, 255, 0.15),

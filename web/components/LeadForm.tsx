@@ -143,7 +143,7 @@ function CustomSelect({
               top: panelRect.top,
               left: panelRect.left,
               width: panelRect.width,
-              background: "#080910",
+              background: "#0d1120",
               border: "1px solid rgba(255,255,255,0.12)",
               borderRadius: 6,
               overflow: "hidden auto",
