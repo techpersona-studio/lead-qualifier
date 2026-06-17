@@ -110,7 +110,7 @@ export function Nav({ workspaces, activeOrgId, isAdmin }: NavProps) {
         padding: "0 40px",
         zIndex: 20,
         borderBottom: scrolled ? "1px solid rgba(255,255,255,0.08)" : "1px solid transparent",
-        background: scrolled ? "rgba(13,17,32,0.65)" : "rgba(13,17,32,0.92)",
+        background: scrolled ? "rgba(10,14,26,0.65)" : "rgba(10,14,26,0.92)",
         backdropFilter: "blur(12px)",
         transition: "background 0.2s ease, border-color 0.2s ease",
       }}
