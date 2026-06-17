@@ -60,7 +60,7 @@ export default function Home() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          padding: "112px 24px",
+          padding: "136px 24px 112px",
         }}
       >
         <div style={{ width: "100%", maxWidth: 560 }}>
