@@ -1,4 +1,5 @@
 import { createServerClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
 import { NextRequest, NextResponse } from "next/server";
 
 const PUBLIC_PATHS = ["/login", "/auth/callback"];
@@ -52,8 +53,16 @@ export async function middleware(request: NextRequest) {
     return response;
   }
 
-  // Redirect to onboarding if the user has no org yet
-  const { data: membership, error: membershipError } = await supabase
+  // Use service role for the membership check — the Edge runtime doesn't
+  // forward the user JWT to PostgREST reliably, so auth.uid() evaluates to
+  // null inside the RLS policy and filters out the row even when it exists.
+  const admin = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { autoRefreshToken: false, persistSession: false } }
+  );
+
+  const { data: membership, error: membershipError } = await admin
     .from("org_members")
     .select("org_id")
     .eq("user_id", user.id)
