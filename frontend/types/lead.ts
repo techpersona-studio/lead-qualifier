@@ -4,6 +4,7 @@ export interface LeadFormData {
   industry: string;
   companySize: string;
   budgetRange: string;
+  urgency: string;
   useCase: string;
   websiteUrl?: string;
 }
@@ -17,5 +18,6 @@ export interface QualificationResult {
   budget: number;
   urgency: number;
   recommendedAction: string;
+  nextSteps: string[];
   flags: string[];
 }

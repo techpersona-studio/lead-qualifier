@@ -2,47 +2,133 @@
 import { useState } from "react";
 import { LeadForm } from "@/components/LeadForm";
 import { QualificationResultCard } from "@/components/QualificationResult";
+import { ParticleCanvas } from "@/components/ParticleCanvas";
+import { AnalyzingView } from "@/components/AnalyzingView";
 import type { QualificationResult } from "@/types/lead";
 
+type View = "form" | "analyzing" | "result";
+
 export default function Home() {
+  const [view, setView] = useState<View>("form");
   const [result, setResult] = useState<QualificationResult | null>(null);
-  const [loading, setLoading] = useState(false);
+
+  const handleResult = (r: QualificationResult) => {
+    setResult(r);
+    setView("result");
+  };
+
+  const handleAnalyzing = (v: boolean) => {
+    if (v) setView("analyzing");
+  };
+
+  const handleReset = () => {
+    setResult(null);
+    setView("form");
+  };
 
   return (
-    <main className="flex min-h-screen lg:h-screen">
-      {/* Left panel — form */}
+    <>
+      <ParticleCanvas />
+
+      {/* Wide spotlight beam from top — focused on the heading area */}
       <div
-        className="flex flex-col w-full lg:w-[45%] lg:sticky lg:top-0 lg:h-screen overflow-y-auto px-8 lg:px-12 py-14"
-        style={{ background: "var(--bg-left)" }}
+        aria-hidden="true"
+        style={{
+          position: "fixed",
+          top: "-60px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: "1100px",
+          height: "700px",
+          background: "radial-gradient(ellipse 62% 62% at 50% 0%, rgba(210,205,255,0.16) 0%, rgba(180,172,255,0.07) 35%, rgba(140,132,240,0.02) 60%, transparent 75%)",
+          pointerEvents: "none",
+          zIndex: 0,
+        }}
+      />
+
+      {/* Fixed wordmark */}
+      <div
+        style={{
+          position: "fixed",
+          top: 32,
+          left: 40,
+          zIndex: 10,
+        }}
       >
-        {/* Wordmark */}
-        <p
-          className="mb-10 text-[11px] font-medium tracking-[0.12em] uppercase"
-          style={{ color: "var(--text-secondary)" }}
-        >
-          Lead Qualifier
-        </p>
-
-        <h1
-          className="mb-8 text-2xl font-medium leading-snug"
-          style={{ color: "var(--text-primary)" }}
-        >
-          Qualify a lead
-        </h1>
-
-        <LeadForm onResult={setResult} onLoading={setLoading} isLoading={loading} />
+        <span className="wordmark">Lead Qualifier</span>
       </div>
 
-      {/* Divider */}
-      <div className="hidden lg:block w-px self-stretch" style={{ background: "var(--divider)" }} />
-
-      {/* Right panel — result */}
-      <div
-        className="flex-1 px-8 lg:px-12 py-14"
-        style={{ background: "var(--bg-right)" }}
+      {/* Centered content — vertically centered on viewport */}
+      <main
+        style={{
+          position: "relative",
+          zIndex: 1,
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "112px 24px",
+        }}
       >
-        <QualificationResultCard result={result} />
-      </div>
-    </main>
+        <div style={{ width: "100%", maxWidth: 560 }}>
+
+          {view === "form" && (
+            <div key="form" className="view-in">
+              {/* Header — "LEAD" gets the spotlight focus */}
+              <div style={{ marginBottom: 48 }}>
+                <h1
+                  className="fade-up fade-up-1"
+                  style={{
+                    fontSize: "clamp(42px, 6vw, 60px)",
+                    fontWeight: 700,
+                    letterSpacing: "-0.03em",
+                    lineHeight: 1.08,
+                    marginBottom: 14,
+                  }}
+                >
+                  {/* "LEAD" is the brightest word — sits under the spotlight cone */}
+                  <span style={{ color: "#f5f3ff" }}>Qualify</span>
+                  {" "}
+                  <span
+                    style={{
+                      color: "#ffffff",
+                      textShadow: "0 0 40px rgba(210,205,255,0.55), 0 0 80px rgba(180,172,255,0.2)",
+                    }}
+                  >
+                    a lead
+                  </span>
+                </h1>
+                <p
+                  className="fade-up fade-up-2"
+                  style={{
+                    fontSize: 13,
+                    color: "rgba(240,237,232,0.38)",
+                    letterSpacing: "0.01em",
+                    lineHeight: 1.65,
+                  }}
+                >
+                  AI-powered scoring across fit, intent, budget, and urgency.
+                </p>
+              </div>
+
+              <LeadForm onResult={handleResult} onAnalyzing={handleAnalyzing} />
+            </div>
+          )}
+
+          {view === "analyzing" && (
+            <div key="analyzing">
+              <AnalyzingView />
+            </div>
+          )}
+
+          {view === "result" && result && (
+            <div key="result" className="view-in">
+              <QualificationResultCard result={result} onReset={handleReset} />
+            </div>
+          )}
+
+        </div>
+      </main>
+    </>
   );
 }

@@ -10,6 +10,7 @@ const QualificationResultSchema = z.object({
   budget: z.number().min(0).max(10),
   urgency: z.number().min(0).max(10),
   recommendedAction: z.string(),
+  nextSteps: z.array(z.string()).default([]),
   flags: z.array(z.string()),
 });
 

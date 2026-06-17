@@ -7,5 +7,5 @@
     "outDir": "dist",
     "rootDir": "."
   },
-  "include": ["trigger/**/*", "lib/**/*", "trigger.config.ts"]
+  "include": ["trigger/**/*", "lib/**/*", "prompts/**/*", "trigger.config.ts"]
 }
