@@ -9,6 +9,7 @@ export function Nav() {
   const router = useRouter();
   const pathname = usePathname();
   const [user, setUser] = useState<{ id: string } | null>(null);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const supabase = createClient();
@@ -17,6 +18,12 @@ export function Nav() {
       setUser(session?.user as { id: string } | null ?? null);
     });
     return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 16);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   const { showNav, showSignOut } = getNavVisibility(pathname, user);
@@ -43,9 +50,10 @@ export function Nav() {
         justifyContent: "space-between",
         padding: "0 40px",
         zIndex: 20,
-        borderBottom: "1px solid rgba(255,255,255,0.05)",
-        background: "rgba(5,8,15,0.85)",
+        borderBottom: scrolled ? "1px solid rgba(255,255,255,0.08)" : "1px solid transparent",
+        background: scrolled ? "rgba(5,8,15,0.65)" : "rgba(5,8,15,0.92)",
         backdropFilter: "blur(12px)",
+        transition: "background 0.2s ease, border-color 0.2s ease",
       }}
     >
       <span className="wordmark">Lead Qualifier</span>
@@ -58,7 +66,7 @@ export function Nav() {
             fontWeight: 600,
             letterSpacing: "0.16em",
             textTransform: "uppercase",
-            color: "var(--text-muted)",
+            color: "var(--text-secondary)",
             textDecoration: "none",
           }}
         >
@@ -71,7 +79,7 @@ export function Nav() {
             fontWeight: 600,
             letterSpacing: "0.16em",
             textTransform: "uppercase",
-            color: "var(--text-muted)",
+            color: "var(--text-secondary)",
             textDecoration: "none",
           }}
         >
