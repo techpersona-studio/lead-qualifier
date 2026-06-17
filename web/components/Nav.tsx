@@ -4,8 +4,16 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/browser";
 import { getNavVisibility } from "@/lib/nav";
+import { WorkspaceSwitcher } from "@/components/WorkspaceSwitcher";
 
-export function Nav() {
+interface Workspace { orgId: string; orgName: string; }
+
+interface NavProps {
+  workspaces: Workspace[];
+  activeOrgId: string;
+}
+
+export function Nav({ workspaces, activeOrgId }: NavProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [user, setUser] = useState<{ id: string } | null>(null);
@@ -56,7 +64,12 @@ export function Nav() {
         transition: "background 0.2s ease, border-color 0.2s ease",
       }}
     >
-      <span className="wordmark">Lead Qualifier</span>
+      <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+        <span className="wordmark">Lead Qualifier</span>
+        {workspaces.length > 0 && (
+          <WorkspaceSwitcher workspaces={workspaces} activeOrgId={activeOrgId} />
+        )}
+      </div>
 
       <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
         <Link

@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { createServerClient } from "@/lib/supabase/server";
 import { LeadRow } from "@/components/LeadRow";
 
@@ -9,12 +10,9 @@ export default async function LeadsPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const { data: memberships } = await supabase
-    .from("org_members")
-    .select("org_id")
-    .eq("user_id", user.id)
-    .limit(1);
-  const membership = memberships?.[0] ?? null;
+  const cookieStore = await cookies();
+  const orgId = cookieStore.get("active_org_id")?.value ?? null;
+  const membership = orgId ? { org_id: orgId } : null;
 
   const leads = membership
     ? (await supabase

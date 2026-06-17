@@ -12,15 +12,8 @@ export async function POST(req: NextRequest) {
   const supabase = await createServerClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  let orgId: string | null = null;
-  if (user) {
-    const { data } = await supabase
-      .from("org_members")
-      .select("org_id")
-      .eq("user_id", user.id)
-      .single();
-    orgId = data?.org_id ?? null;
-  }
+  // Read the active workspace from the cookie set by middleware
+  const orgId = req.cookies.get("active_org_id")?.value ?? null;
 
   const handle = await tasks.trigger("qualify-lead", body, {
     tags: ["lead-qualifier"],

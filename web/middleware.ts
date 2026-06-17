@@ -69,20 +69,28 @@ export async function middleware(request: NextRequest) {
   const { data: memberships, error: membershipError } = await admin
     .from("org_members")
     .select("org_id")
-    .eq("user_id", user.id)
-    .limit(1);
+    .eq("user_id", user.id);
 
   if (membershipError) {
     console.error("[middleware] org_members query error:", membershipError.message, membershipError.code);
   }
 
-  const membership = memberships?.[0] ?? null;
-
-  if (!membership) {
+  if (!memberships?.length) {
     console.warn("[middleware] no membership for user", user.id, "on path", pathname);
     const onboardingUrl = new URL("/onboarding", request.url);
     return NextResponse.redirect(onboardingUrl);
   }
+
+  // Use the cookie-persisted active org, falling back to the first membership.
+  // The /api/org/switch route sets this cookie when the user picks a workspace.
+  const activeOrgCookie = request.cookies.get("active_org_id")?.value;
+  const validOrg = memberships.find((m) => m.org_id === activeOrgCookie) ?? memberships[0];
+
+  response.cookies.set("active_org_id", validOrg.org_id, {
+    httpOnly: true,
+    sameSite: "lax",
+    path: "/",
+  });
 
   return response;
 }
