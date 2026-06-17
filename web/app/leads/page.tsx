@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { createServerClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { LeadRow } from "@/components/LeadRow";
 
 export default async function LeadsPage() {
@@ -9,13 +10,12 @@ export default async function LeadsPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
+  const admin = createAdminClient();
   const cookieStore = await cookies();
   let orgId = cookieStore.get("active_org_id")?.value ?? null;
 
-  // Cookie may not be set yet on the first render after login. Fall back to the
-  // first org membership so the leads list isn't silently empty.
   if (!orgId) {
-    const { data: memberships } = await supabase
+    const { data: memberships } = await admin
       .from("org_members")
       .select("org_id")
       .eq("user_id", user.id)
@@ -24,7 +24,7 @@ export default async function LeadsPage() {
   }
 
   const leads = orgId
-    ? (await supabase
+    ? (await admin
         .from("leads")
         .select("id, company_name, contact_name, grade, score, created_at")
         .eq("org_id", orgId)

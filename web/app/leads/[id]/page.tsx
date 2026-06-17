@@ -27,7 +27,8 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
 
   if (!orgId) notFound();
 
-  const { data: lead } = await supabase
+  const admin = createAdminClient();
+  const { data: lead } = await admin
     .from("leads")
     .select("id, org_id, result")
     .eq("id", id)
