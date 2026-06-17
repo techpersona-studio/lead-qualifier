@@ -28,39 +28,33 @@ Evaluate the lead across four dimensions:
 - Have they provided meaningful details?
 
 3. Budget
-Score whether the budget is reasonable FOR THE SPECIFIC WORK REQUESTED, not on the dollar figure alone. The same budget can be strong for one project and weak for another. A new agency competing on quality at a fair price wins these small, well-scoped projects, so do not penalize a good budget-to-scope match.
+Score the budget by the VALUE OF OUR TIME, not the dollar figure alone. A small budget for fast, easy work is a great deal; a large budget that hides huge effort can be mediocre. A new agency competing on quality at a fair price wins small, well-scoped projects, so reward strong effort-to-value matches.
 
-First estimate the project's complexity from the use case and the website (if scraped):
+Step 1 — Estimate the effort. From the use case and the scraped website, estimate how many hours this work realistically takes us. Examples:
+- Template or builder site tweak, content or copy refresh, single landing page: 2-4 hours
+- Basic restaurant or small-business site or redesign on a template platform: 4-10 hours
+- Custom multi-page site, conversion optimization, e-commerce setup: 20-60 hours
+- Business process automation, AI workflows, integrations, custom platform: 40-150+ hours
 
-Simple work (template or builder-based sites, restaurant or small-business sites, landing pages, basic redesigns, content or copy refreshes):
-- These are low-effort and profitable at modest budgets.
-- $1,500+ = 10, generous for simple work
-- $1,000-$1,500 = 9
-- $500-$1,000 = 8, a solid, closeable deal
-- $300-$500 = 6, workable for a basic redesign
-- Under $300 = 3
+Step 2 — Compute the effective hourly rate: budget divided by estimated hours. Our target is $100-$150/hour (US agency benchmark). Score the rate:
+- $200+/hour = 10, excellent, easy money
+- $150-$200/hour = 9
+- $100-$150/hour = 8, at or above market, a solid deal
+- $75-$100/hour = 6, acceptable for a new agency building a portfolio
+- $50-$75/hour = 4, thin margin
+- $30-$50/hour = 2, barely worth the time
+- Under $30/hour = 1, not worth pursuing
 
-Medium work (custom website builds, multi-page sites with custom design, conversion optimization, e-commerce, CRM or tool setup):
-- $5,000+ = 10
-- $3,000-$5,000 = 9
-- $2,000-$3,000 = 7
-- $1,000-$2,000 = 5
-- $500-$1,000 = 3
-- Under $500 = 1, likely a scope mismatch
-
-Complex work (business process automation, AI workflows, sales or support automation, integrations, custom platforms):
-- These need real engineering time to be worth pursuing.
-- $8,000+ = 10
-- $5,000-$8,000 = 8
-- $3,000-$5,000 = 6
-- $1,000-$3,000 = 3, scope likely exceeds budget
-- Under $1,000 = 1, clear mismatch
+Worked examples:
+- $500 for a 3-hour template tweak = ~$165/hour = 9-10. Easy, fast, well-paid.
+- $500 for a basic restaurant site (~5 hours) = ~$100/hour = 8. A clean, profitable win.
+- $1,000 for a custom automation build (~50 hours) = ~$20/hour = 1. Scope far exceeds budget.
 
 Rules:
-- Score the FIT between budget and scope. $500 for a basic redesign is strong. $1,000 for a custom automation build is weak.
-- Use the scraped website to judge complexity. A simple template restaurant site signals low-effort, high-margin work even at a small budget.
-- Only treat budgets under $300 as weak across the board.
-- Do not add a "budget below agency minimum" flag when the budget reasonably matches simple scope.
+- Reward high effective hourly rate even when the absolute budget is small.
+- Use the scraped website to judge effort. A simple template restaurant site signals low-effort, high-margin work.
+- When effort is uncertain, estimate a reasonable range and score the midpoint.
+- Do not flag "budget too low" when the effective hourly rate is at or above market.
 
 4. Urgency
 - Is there a defined timeline?

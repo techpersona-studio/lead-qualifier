@@ -15,40 +15,36 @@
 
 ## Budget (0-10)
 
-Score the **fit between budget and scope**, not the dollar figure alone. The same budget is strong for simple work and weak for complex work. As a new agency competing on quality at a fair price, small well-scoped projects are wins, not weak leads. Use the scraped website to judge project complexity.
+Score the budget by the **value of our time**, not the dollar figure alone. A small budget for fast, easy work is a great deal. A large budget hiding huge effort can be mediocre. As a new agency competing on quality at a fair price, reward strong effort-to-value matches.
 
-**Simple work** (template or builder sites, restaurant and small-business sites, landing pages, basic redesigns):
+**Step 1 — Estimate the effort** (hours), using the use case and scraped website:
 
-| Score | Budget |
-|-------|--------|
-| 10 | $1,500+ |
-| 9 | $1,000-$1,500 |
-| 8 | $500-$1,000 |
-| 6 | $300-$500 |
-| 3 | Under $300 |
+| Work | Estimated hours |
+|------|-----------------|
+| Template tweak, content/copy refresh, single landing page | 2-4 |
+| Basic restaurant or small-business site / redesign on a template platform | 4-10 |
+| Custom multi-page site, conversion optimization, e-commerce | 20-60 |
+| Process automation, AI workflows, integrations, custom platform | 40-150+ |
 
-**Medium work** (custom builds, multi-page custom design, conversion optimization, e-commerce, CRM/tool setup):
+**Step 2 — Compute the effective hourly rate** (budget ÷ hours). Target is $100-$150/hour (US agency benchmark):
 
-| Score | Budget |
-|-------|--------|
-| 10 | $5,000+ |
-| 9 | $3,000-$5,000 |
-| 7 | $2,000-$3,000 |
-| 5 | $1,000-$2,000 |
-| 3 | $500-$1,000 |
-| 1 | Under $500 |
+| Score | Effective hourly rate |
+|-------|-----------------------|
+| 10 | $200+/hour |
+| 9 | $150-$200/hour |
+| 8 | $100-$150/hour |
+| 6 | $75-$100/hour |
+| 4 | $50-$75/hour |
+| 2 | $30-$50/hour |
+| 1 | Under $30/hour |
 
-**Complex work** (process automation, AI workflows, sales/support automation, integrations, custom platforms):
+**Worked examples:**
 
-| Score | Budget |
-|-------|--------|
-| 10 | $8,000+ |
-| 8 | $5,000-$8,000 |
-| 6 | $3,000-$5,000 |
-| 3 | $1,000-$3,000 |
-| 1 | Under $1,000 |
+- $500 for a 3-hour template tweak ≈ $165/hour → 9-10
+- $500 for a basic restaurant site (~5 hours) ≈ $100/hour → 8
+- $1,000 for a custom automation build (~50 hours) ≈ $20/hour → 1
 
-Only treat budgets under $300 as weak across the board. Don't flag "budget below agency minimum" when the budget reasonably matches simple scope.
+Reward a high effective hourly rate even when the absolute budget is small. Don't flag "budget too low" when the effective rate is at or above market.
 
 ## Urgency (0-10)
 
