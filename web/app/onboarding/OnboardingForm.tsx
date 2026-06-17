@@ -23,8 +23,7 @@ export function OnboardingForm() {
         setError(error ?? "Failed to create workspace.");
         return;
       }
-      router.push("/");
-      router.refresh();
+      window.location.href = "/";
     } catch {
       setError("Network error.");
     } finally {
