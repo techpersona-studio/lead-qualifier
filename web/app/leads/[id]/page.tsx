@@ -37,7 +37,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
   if (!lead || lead.org_id !== orgId) notFound();
 
   return (
-    <main style={{ padding: "120px 24px 60px", maxWidth: 600, margin: "0 auto" }}>
+    <main style={{ padding: "144px 24px 80px", maxWidth: 600, margin: "0 auto" }}>
       <Link
         href="/leads"
         style={{

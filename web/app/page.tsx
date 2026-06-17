@@ -60,7 +60,7 @@ export default function Home() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          padding: "136px 24px 112px",
+          padding: "156px 24px 112px",
         }}
       >
         <div style={{ width: "100%", maxWidth: 560 }}>
@@ -95,7 +95,7 @@ export default function Home() {
                   className="fade-up fade-up-2"
                   style={{
                     fontSize: 13,
-                    color: "rgba(240,237,232,0.38)",
+                    color: "rgba(240,237,232,0.55)",
                     letterSpacing: "0.01em",
                     lineHeight: 1.65,
                   }}

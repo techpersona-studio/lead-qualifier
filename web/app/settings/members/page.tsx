@@ -38,7 +38,7 @@ export default async function MembersPage() {
   const orgName = orgResult.data?.name ?? "Workspace";
 
   return (
-    <main style={{ padding: "96px 40px 60px", maxWidth: 700, margin: "0 auto" }}>
+    <main style={{ padding: "120px 40px 80px", maxWidth: 700, margin: "0 auto" }}>
       <h1
         style={{
           fontSize: 28,

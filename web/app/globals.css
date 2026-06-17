@@ -13,8 +13,8 @@
   --border: rgba(255, 255, 255, 0.08);
   --border-focus: rgba(255, 255, 255, 0.3);
   --text-primary: #f0ede8;
-  --text-secondary: rgba(240, 237, 232, 0.5);
-  --text-muted: rgba(240, 237, 232, 0.25);
+  --text-secondary: rgba(240, 237, 232, 0.75);
+  --text-muted: rgba(240, 237, 232, 0.5);
   --accent: #b8b2f8;
   --accent-dim: rgba(184, 178, 248, 0.12);
   /* All grades live in the purple/white spectrum — no warm colors */
@@ -97,7 +97,7 @@ body::before {
   font-family: var(--font-syne), sans-serif;
   font-size: 13px;
   letter-spacing: 0.01em;
-  color: rgba(240, 237, 232, 0.55);
+  color: rgba(240, 237, 232, 0.68);
   cursor: pointer;
   transition: background 200ms ease, border-color 200ms ease, color 200ms ease;
 }

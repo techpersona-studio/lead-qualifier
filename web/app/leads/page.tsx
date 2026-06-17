@@ -33,7 +33,7 @@ export default async function LeadsPage() {
     : [];
 
   return (
-    <main style={{ padding: "120px 40px 60px", maxWidth: 900, margin: "0 auto" }}>
+    <main style={{ padding: "144px 40px 80px", maxWidth: 900, margin: "0 auto" }}>
       <h1
         style={{
           fontSize: 32,
@@ -64,7 +64,7 @@ export default async function LeadsPage() {
                     fontWeight: 700,
                     letterSpacing: "0.16em",
                     textTransform: "uppercase",
-                    color: "rgba(240, 237, 232, 0.45)",
+                    color: "rgba(240, 237, 232, 0.6)",
                     textAlign: h === "Date" ? "right" : "left",
                     paddingRight: h === "Date" ? 0 : 16,
                   }}

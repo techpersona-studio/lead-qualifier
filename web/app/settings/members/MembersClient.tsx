@@ -92,7 +92,7 @@ export function MembersClient({ members: initial, isAdmin, currentUserId, orgId,
                   fontWeight: 700,
                   letterSpacing: "0.16em",
                   textTransform: "uppercase",
-                  color: "var(--text-muted)",
+                  color: "rgba(240, 237, 232, 0.6)",
                   textAlign: "left",
                 }}
               >
@@ -116,10 +116,10 @@ export function MembersClient({ members: initial, isAdmin, currentUserId, orgId,
                 <td style={{ padding: "14px 0", fontSize: 13, color: "var(--text-primary)", fontFamily: "var(--font-geist-mono)" }}>
                   {m.user_id}
                 </td>
-                <td style={{ padding: "14px 16px", fontSize: 12, color: "var(--text-muted)", textTransform: "capitalize" }}>
+                <td style={{ padding: "14px 16px", fontSize: 12, color: "var(--text-secondary)", textTransform: "capitalize" }}>
                   {m.role}
                 </td>
-                <td style={{ padding: "14px 16px", fontSize: 12, color: "var(--text-muted)" }}>
+                <td style={{ padding: "14px 16px", fontSize: 12, color: "var(--text-secondary)" }}>
                   {joined}
                 </td>
                 {isAdmin && (
@@ -168,7 +168,7 @@ export function MembersClient({ members: initial, isAdmin, currentUserId, orgId,
               fontWeight: 700,
               letterSpacing: "0.22em",
               textTransform: "uppercase",
-              color: "var(--text-muted)",
+              color: "var(--text-secondary)",
               marginBottom: 16,
             }}
           >
