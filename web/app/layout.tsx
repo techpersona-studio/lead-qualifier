@@ -36,20 +36,23 @@ async function getWorkspaceProps() {
 
     const { data: memberships } = await admin
       .from("org_members")
-      .select("org_id, orgs(name)")
+      .select("org_id, role, orgs(name)")
       .eq("user_id", user.id);
 
     const cookieStore = await cookies();
     const activeOrgId = cookieStore.get("active_org_id")?.value ?? memberships?.[0]?.org_id ?? "";
 
-    const workspaces = (memberships ?? []).map((m: { org_id: string; orgs: { name: string }[] | { name: string } | null }) => ({
+    const workspaces = (memberships ?? []).map((m: { org_id: string; role: string; orgs: { name: string }[] | { name: string } | null }) => ({
       orgId: m.org_id,
       orgName: (Array.isArray(m.orgs) ? m.orgs[0]?.name : m.orgs?.name) ?? "Workspace",
     }));
 
-    return { workspaces, activeOrgId };
+    const activeMembership = memberships?.find((m) => m.org_id === activeOrgId) ?? memberships?.[0];
+    const isAdmin = activeMembership?.role === "admin";
+
+    return { workspaces, activeOrgId, isAdmin };
   } catch {
-    return { workspaces: [], activeOrgId: "" };
+    return { workspaces: [], activeOrgId: "", isAdmin: false };
   }
 }
 
@@ -58,7 +61,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const { workspaces, activeOrgId } = await getWorkspaceProps();
+  const { workspaces, activeOrgId, isAdmin } = await getWorkspaceProps();
 
   return (
     <html
@@ -66,7 +69,7 @@ export default async function RootLayout({
       className={`${syne.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="h-full" suppressHydrationWarning>
-        <Nav workspaces={workspaces} activeOrgId={activeOrgId} />
+        <Nav workspaces={workspaces} activeOrgId={activeOrgId} isAdmin={isAdmin} />
         {children}
       </body>
     </html>

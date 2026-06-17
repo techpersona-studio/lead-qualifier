@@ -11,9 +11,10 @@ interface Workspace { orgId: string; orgName: string; }
 interface NavProps {
   workspaces: Workspace[];
   activeOrgId: string;
+  isAdmin: boolean;
 }
 
-export function Nav({ workspaces, activeOrgId }: NavProps) {
+export function Nav({ workspaces, activeOrgId, isAdmin }: NavProps) {
   const router = useRouter();
   const pathname = usePathname();
   const [user, setUser] = useState<{ id: string } | null>(null);
@@ -98,6 +99,21 @@ export function Nav({ workspaces, activeOrgId }: NavProps) {
         >
           Leads
         </Link>
+        {isAdmin && (
+          <Link
+            href="/settings/members"
+            style={{
+              fontSize: 11,
+              fontWeight: 600,
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+              color: "var(--text-secondary)",
+              textDecoration: "none",
+            }}
+          >
+            Team
+          </Link>
+        )}
         {showSignOut && (
           <button
             data-testid="signout-button"
