@@ -1,6 +1,6 @@
 # Lead scoring philosophy
 
-How this agency decides whether a lead is worth sales time. These principles drive the live system prompt in [`backend/prompts/lead-qualifier.ts`](../../backend/prompts/lead-qualifier.ts). That `.ts` is the single source of truth for scoring; this doc holds the rationale behind it.
+How this agency decides whether a lead is worth sales time. These principles drive the live system prompt in [`trigger/prompts/lead-qualifier.ts`](../../trigger/prompts/lead-qualifier.ts). That `.ts` is the single source of truth for scoring; this doc holds the rationale behind it.
 
 ## Who we are
 
@@ -36,7 +36,7 @@ Rationale: at a small local business, the person filling out the form is the buy
 
 ## Website context grounds the scoring
 
-The trigger task scrapes the lead's website ([`backend/lib/website.ts`](../../backend/lib/website.ts)) and feeds the readable text to the model before scoring. This resolves vague form fields (e.g. industry "Other") and drives the effort estimate. A template restaurant site signals low-effort, high-margin work even at a small budget.
+The trigger task scrapes the lead's website ([`trigger/lib/website.ts`](../../trigger/lib/website.ts)) and feeds the readable text to the model before scoring. This resolves vague form fields (e.g. industry "Other") and drives the effort estimate. A template restaurant site signals low-effort, high-margin work even at a small budget.
 
 ## We sell with confidence, not just react to the request
 
@@ -52,8 +52,8 @@ The website is optional on the form. When it's present, it's the ground truth: r
 
 | Concern | File |
 |---------|------|
-| System prompt the model runs on (source of truth) | `backend/prompts/lead-qualifier.ts` |
-| Website scrape feeding context | `backend/lib/website.ts` |
-| Output schema + validation | `backend/lib/scorer.ts`, `backend/types/lead.ts` |
+| System prompt the model runs on (source of truth) | `trigger/prompts/lead-qualifier.ts` |
+| Website scrape feeding context | `trigger/lib/website.ts` |
+| Output schema + validation | `trigger/lib/scorer.ts`, `trigger/types/lead.ts` |
 
 When you change scoring, edit the prompt, then redeploy the backend (`cd backend && npx trigger.dev@latest deploy`).
