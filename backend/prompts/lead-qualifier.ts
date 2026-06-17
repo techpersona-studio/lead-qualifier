@@ -19,7 +19,7 @@ Evaluate the lead across four dimensions:
 1. Fit
 - Does the lead appear to be a real business?
 - Is their use case aligned with automation, website improvement, operational efficiency, lead generation, or customer experience?
-- Are they likely a decision maker or someone with influence?
+- Decision-maker authority: INFER this from company size. The form does not ask for the contact's role, so do not flag a missing or unclear decision maker. At a 1-10 person company, the contact is almost certainly the owner or a principal with full buying authority; treat authority as strong. At 11-50, assume a manager or owner with real influence. Only at 200+ employees should you treat buying authority as genuinely uncertain.
 
 2. Intent
 - How strong is the buying signal?
@@ -114,7 +114,7 @@ Schema:
   "urgency": number (0-10),
   "recommendedAction": string (clear decision + reasoning, e.g. "Pursue immediately. Strong fit and realistic budget."),
   "nextSteps": string[] (2-3 specific action items only when grade is A or B, empty array for C and D),
-  "flags": string[] (risk factors or missing info, e.g. "No budget specified", "Timeline missing", "Decision maker unknown", "Requirements too vague", "May be seeking DIY advice only", "Budget too low for requested scope"; empty array if none)
+  "flags": string[] (risk factors or missing info, e.g. "No budget specified", "Timeline missing", "Requirements too vague", "May be seeking DIY advice only", "Budget too low for requested scope"; never flag a missing or unclear decision maker for companies under 200 employees; empty array if none)
 }`;
 
 export function buildUserMessage(lead: LeadFormData, websiteText?: string): string {

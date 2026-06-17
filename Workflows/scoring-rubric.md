@@ -4,7 +4,7 @@
 
 - Does the lead appear to be a real business?
 - Is their use case aligned with automation, website improvement, operational efficiency, lead generation, or customer experience?
-- Are they likely a decision maker or someone with influence?
+- Decision-maker authority is **inferred from company size**, since the form doesn't capture the contact's role. At 1-10 employees the contact is almost certainly the owner (strong authority); at 11-50 assume a manager or owner with influence; only at 200+ treat authority as uncertain. Never flag a missing decision maker for companies under 200.
 
 ## Intent (0-10)
 
@@ -107,7 +107,6 @@ Risk factors or missing information, such as:
 
 - "No budget specified"
 - "Timeline missing"
-- "Decision maker unknown"
 - "Requirements too vague"
 - "May be seeking DIY advice only"
 - "Budget too low for requested scope"
