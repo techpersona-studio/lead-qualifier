@@ -33,7 +33,9 @@ export default async function LeadsPage() {
     : [];
 
   return (
-    <main style={{ padding: "144px 40px 80px", maxWidth: 900, margin: "0 auto" }}>
+    <>
+      <div aria-hidden="true" className="page-spotlight" />
+    <main style={{ padding: "144px 40px 80px", maxWidth: 900, margin: "0 auto", position: "relative", zIndex: 1 }}>
       <h1
         style={{
           fontSize: 32,
@@ -82,5 +84,6 @@ export default async function LeadsPage() {
         </table>
       )}
     </main>
+    </>
   );
 }

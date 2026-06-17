@@ -9,9 +9,11 @@ export default function LoginPage() {
         alignItems: "center",
         justifyContent: "center",
         padding: "24px",
+        position: "relative",
       }}
     >
-      <div style={{ width: "100%", maxWidth: 400 }}>
+      <div aria-hidden="true" className="page-spotlight" />
+      <div style={{ width: "100%", maxWidth: 400, position: "relative", zIndex: 1 }}>
         <div style={{ marginBottom: 40 }}>
           <span className="wordmark">Lead Qualifier</span>
         </div>

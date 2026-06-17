@@ -38,7 +38,9 @@ export default async function MembersPage() {
   const orgName = orgResult.data?.name ?? "Workspace";
 
   return (
-    <main style={{ padding: "120px 40px 80px", maxWidth: 700, margin: "0 auto" }}>
+    <>
+      <div aria-hidden="true" className="page-spotlight" />
+    <main style={{ padding: "120px 40px 80px", maxWidth: 700, margin: "0 auto", position: "relative", zIndex: 1 }}>
       <h1
         style={{
           fontSize: 28,
@@ -61,5 +63,6 @@ export default async function MembersPage() {
         orgName={orgName}
       />
     </main>
+    </>
   );
 }
