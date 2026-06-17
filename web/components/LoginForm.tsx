@@ -19,11 +19,12 @@ export function LoginForm() {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) {
         setError(error.message);
+        setLoading(false);
         return;
       }
-      router.push("/");
-      router.refresh();
-    } finally {
+      window.location.href = "/";
+      // leave loading=true — button stays "Signing in…" until the page unloads
+    } catch {
       setLoading(false);
     }
   };
