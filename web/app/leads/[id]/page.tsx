@@ -1,6 +1,8 @@
 import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { createServerClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { QualificationResultCard } from "@/components/QualificationResult";
 
 export default async function LeadDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -10,13 +12,20 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/login");
 
-  const { data: membership } = await supabase
-    .from("org_members")
-    .select("org_id")
-    .eq("user_id", user.id)
-    .single();
+  const cookieStore = await cookies();
+  let orgId = cookieStore.get("active_org_id")?.value ?? null;
 
-  if (!membership) notFound();
+  if (!orgId) {
+    const admin = createAdminClient();
+    const { data: memberships } = await admin
+      .from("org_members")
+      .select("org_id")
+      .eq("user_id", user.id)
+      .limit(1);
+    orgId = memberships?.[0]?.org_id ?? null;
+  }
+
+  if (!orgId) notFound();
 
   const { data: lead } = await supabase
     .from("leads")
@@ -24,7 +33,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
     .eq("id", id)
     .single();
 
-  if (!lead || lead.org_id !== membership.org_id) notFound();
+  if (!lead || lead.org_id !== orgId) notFound();
 
   return (
     <main style={{ padding: "96px 24px 60px", maxWidth: 600, margin: "0 auto" }}>

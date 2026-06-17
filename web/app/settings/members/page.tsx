@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { createServerClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { MembersClient } from "./MembersClient";
 
 export default async function MembersPage() {
@@ -13,7 +14,9 @@ export default async function MembersPage() {
   const orgId = cookieStore.get("active_org_id")?.value ?? null;
   if (!orgId) redirect("/");
 
-  const { data: membership } = await supabase
+  const admin = createAdminClient();
+
+  const { data: membership } = await admin
     .from("org_members")
     .select("org_id, role")
     .eq("user_id", user.id)
@@ -22,7 +25,7 @@ export default async function MembersPage() {
 
   if (!membership) redirect("/");
 
-  const { data: members } = await supabase
+  const { data: members } = await admin
     .from("org_members")
     .select("id, role, user_id, created_at")
     .eq("org_id", membership.org_id)
