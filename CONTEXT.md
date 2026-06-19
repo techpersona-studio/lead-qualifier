@@ -19,7 +19,20 @@ A member with elevated permissions within an org. Admins can invite new members 
 
 ## Lead
 
-A prospective customer that a member has submitted for AI qualification. A lead stores the original form input (`LeadFormData`) and the AI-generated result (`QualificationResult`). Leads belong to an org and are visible to all members of that org.
+A prospective customer that a member has submitted for AI qualification. A lead stores the original form input (`LeadFormData`) and the AI-generated result (`QualificationResult`). Leads belong to an org and are visible to all members of that org. A lead is identified within its org by the Owner's **email** (normalized, lowercased); re-qualifying the same email overwrites the lead in place rather than creating a duplicate.
+
+## Owner
+
+The decision-maker at a Lead's business; the person the agency talks to on the discovery call and the recipient of the Opportunity Map. One Owner per Lead.
+_Avoid_: "client" (collides with Org, the agency that pays for this tool) and "customer".
+
+## Opportunity Map
+
+A ranked, ICE-scored set of service opportunities the agency produces for a qualified Lead after a discovery call. Built from the call conversation plus a website analysis, and delivered to the Owner as a report. Produced by the **Opportunity Map Generator** agent and belongs to a Lead (one Lead can have many maps over time).
+
+## ICE score
+
+The priority score for one opportunity: the equal-weighted average of Impact, Confidence, and Ease, each 0-10. Banded into an A-D grade (A ≥ 8.0, B 6.5-7.9, C 4.5-6.4, D < 4.5) to match the Lead Qualifier's grading.
 
 ## Qualification
 

@@ -1,6 +1,8 @@
 export interface LeadFormData {
   companyName: string;
   contactName: string;
+  email: string;
+  phone?: string;
   industry: string;
   companySize: string;
   budgetRange: string;

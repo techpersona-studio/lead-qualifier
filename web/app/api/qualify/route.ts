@@ -2,20 +2,39 @@ import { NextRequest, NextResponse } from "next/server";
 import { tasks, runs } from "@trigger.dev/sdk/v3";
 import type { LeadFormData } from "@/types/lead";
 import { createServerClient } from "@/lib/supabase/server";
-import { saveLead } from "@/lib/leads";
+import { findLeadByEmail, saveLead } from "@/lib/leads";
 
 export const maxDuration = 60;
 
+interface QualifyRequestBody extends LeadFormData {
+  overwrite?: boolean;
+}
+
 export async function POST(req: NextRequest) {
-  const body: LeadFormData = await req.json();
+  const body: QualifyRequestBody = await req.json();
+  const { overwrite, ...leadData } = body;
 
   const supabase = await createServerClient();
   const { data: { user } } = await supabase.auth.getUser();
 
-  // Read the active workspace from the cookie set by middleware
   const orgId = req.cookies.get("active_org_id")?.value ?? null;
 
-  const handle = await tasks.trigger("qualify-lead", body, {
+  if (user && orgId) {
+    const existing = await findLeadByEmail(orgId, leadData.email);
+    if (existing && !overwrite) {
+      return NextResponse.json(
+        {
+          exists: true,
+          companyName: existing.companyName,
+          email: existing.email,
+          leadId: existing.id,
+        },
+        { status: 409 },
+      );
+    }
+  }
+
+  const handle = await tasks.trigger("qualify-lead", leadData, {
     tags: ["lead-qualifier"],
   });
 
@@ -26,7 +45,14 @@ export async function POST(req: NextRequest) {
   }
 
   if (user && orgId) {
-    const { id } = await saveLead(user.id, orgId, body, result.output);
+    const existing = await findLeadByEmail(orgId, leadData.email);
+    const { id } = await saveLead(
+      user.id,
+      orgId,
+      leadData,
+      result.output,
+      existing?.id,
+    );
     return NextResponse.json({ ...result.output, id });
   }
 

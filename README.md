@@ -135,4 +135,8 @@ Read `docs/memory/scoring-philosophy.md` first, edit the prompt, then redeploy t
 
 Access is invite-only — there's no public sign-up. An org admin invites teammates by email from `/settings/members`. Supabase sends the invite email; the link lands the new member directly in the app.
 
-Leads are org-scoped: everyone on the team sees the same history. See `docs/adr/0001-org-scoped-leads.md` for the rationale.
+Leads are org-scoped: everyone on the team sees the same history. Each Lead is keyed by the Owner's email within the org; re-qualifying the same email prompts for overwrite instead of creating a duplicate. See `docs/adr/0001-org-scoped-leads.md` for the rationale.
+
+## Opportunity Map
+
+After a discovery call, open **Opportunity Map** in the nav, select a Lead, paste or drop the call transcript, and generate a ranked ICE report. Saved maps live at `/opportunity-map/[id]` with a print-to-PDF download.

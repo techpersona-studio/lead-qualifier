@@ -4,6 +4,7 @@ import { NextRequest } from "next/server";
 const mockTrigger = jest.fn();
 const mockPoll = jest.fn();
 const mockSaveLead = jest.fn();
+const mockFindLeadByEmail = jest.fn();
 const mockGetUser = jest.fn();
 const mockFrom = jest.fn();
 
@@ -14,6 +15,7 @@ jest.mock("@trigger.dev/sdk/v3", () => ({
 
 jest.mock("@/lib/leads", () => ({
   saveLead: (...args: unknown[]) => mockSaveLead(...args),
+  findLeadByEmail: (...args: unknown[]) => mockFindLeadByEmail(...args),
 }));
 
 jest.mock("@/lib/supabase/server", () => ({
@@ -26,6 +28,7 @@ jest.mock("@/lib/supabase/server", () => ({
 const formData = {
   companyName: "Acme",
   contactName: "Jane",
+  email: "jane@acme.com",
   industry: "SaaS",
   companySize: "11-50",
   budgetRange: "$10k-$50k",
@@ -54,7 +57,10 @@ function makeRequest(body: object) {
 }
 
 describe("POST /api/qualify", () => {
-  beforeEach(() => jest.clearAllMocks());
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockFindLeadByEmail.mockResolvedValue(null);
+  });
 
   it("returns qualification result with id on success", async () => {
     mockGetUser.mockResolvedValue({
@@ -74,7 +80,10 @@ describe("POST /api/qualify", () => {
     mockPoll.mockResolvedValue({ status: "COMPLETED", output: qualResult });
     mockSaveLead.mockResolvedValue({ id: "lead-123" });
 
-    const res = await POST(makeRequest(formData));
+    const req = makeRequest(formData);
+    req.cookies.set("active_org_id", "org-1");
+
+    const res = await POST(req);
     const json = await res.json();
 
     expect(res.status).toBe(200);
@@ -84,7 +93,8 @@ describe("POST /api/qualify", () => {
       "user-1",
       "org-1",
       expect.objectContaining({ companyName: "Acme" }),
-      qualResult
+      qualResult,
+      undefined,
     );
   });
 
@@ -111,5 +121,58 @@ describe("POST /api/qualify", () => {
     expect(res.status).toBe(500);
     expect(json.error).toBeDefined();
     expect(mockSaveLead).not.toHaveBeenCalled();
+  });
+
+  it("returns 409 when a lead with the same email already exists and overwrite is not set", async () => {
+    mockGetUser.mockResolvedValue({
+      data: { user: { id: "user-1" } },
+    });
+    mockFindLeadByEmail.mockResolvedValue({
+      id: "lead-existing",
+      companyName: "Acme",
+      email: "jane@acme.com",
+    });
+
+    const req = makeRequest(formData);
+    req.cookies.set("active_org_id", "org-1");
+
+    const res = await POST(req);
+    const json = await res.json();
+
+    expect(res.status).toBe(409);
+    expect(json.exists).toBe(true);
+    expect(json.leadId).toBe("lead-existing");
+    expect(mockTrigger).not.toHaveBeenCalled();
+    expect(mockSaveLead).not.toHaveBeenCalled();
+  });
+
+  it("overwrites an existing lead when overwrite is true", async () => {
+    mockGetUser.mockResolvedValue({
+      data: { user: { id: "user-1" } },
+    });
+    mockFindLeadByEmail.mockResolvedValue({
+      id: "lead-existing",
+      companyName: "Acme",
+      email: "jane@acme.com",
+    });
+    mockTrigger.mockResolvedValue({ id: "run-1" });
+    mockPoll.mockResolvedValue({ status: "COMPLETED", output: qualResult });
+    mockSaveLead.mockResolvedValue({ id: "lead-existing" });
+
+    const req = makeRequest({ ...formData, overwrite: true });
+    req.cookies.set("active_org_id", "org-1");
+
+    const res = await POST(req);
+    const json = await res.json();
+
+    expect(res.status).toBe(200);
+    expect(json.id).toBe("lead-existing");
+    expect(mockSaveLead).toHaveBeenCalledWith(
+      "user-1",
+      "org-1",
+      expect.objectContaining({ email: "jane@acme.com" }),
+      qualResult,
+      "lead-existing",
+    );
   });
 });

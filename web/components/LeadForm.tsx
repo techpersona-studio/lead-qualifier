@@ -219,6 +219,8 @@ export function LeadForm({ onResult, onAnalyzing }: Props) {
   const [form, setForm] = useState<Omit<LeadFormData, "useCase">>({
     companyName: "",
     contactName: "",
+    email: "",
+    phone: "",
     industry: "",
     companySize: "",
     budgetRange: "",
@@ -228,6 +230,11 @@ export function LeadForm({ onResult, onAnalyzing }: Props) {
 
   const [openId, setOpenId] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [overwriteConfirm, setOverwriteConfirm] = useState<{
+    companyName: string;
+    email: string;
+    payload: LeadFormData;
+  } | null>(null);
 
   // Use-case is captured as multi-select chips + an optional "Other" free-text field.
   const [selectedUseCases, setSelectedUseCases] = useState<string[]>([]);
@@ -251,23 +258,51 @@ export function LeadForm({ onResult, onAnalyzing }: Props) {
     (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
       setForm((prev) => ({ ...prev, [field]: e.target.value }));
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const submitQualification = async (payload: LeadFormData, overwrite = false) => {
     setSubmitting(true);
     onAnalyzing(true);
     try {
-      const payload: LeadFormData = { ...form, useCase };
       const res = await fetch("/api/qualify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ ...payload, overwrite }),
       });
       const data = await res.json();
+
+      if (res.status === 409 && data.exists) {
+        setOverwriteConfirm({
+          companyName: data.companyName,
+          email: data.email,
+          payload,
+        });
+        return;
+      }
+
+      if (!res.ok) {
+        throw new Error(data.error ?? "Qualification failed");
+      }
+
       onResult(data);
     } finally {
       setSubmitting(false);
       onAnalyzing(false);
     }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const payload: LeadFormData = { ...form, useCase };
+    if (form.phone?.trim() === "") {
+      delete payload.phone;
+    }
+    await submitQualification(payload);
+  };
+
+  const handleOverwriteConfirm = async () => {
+    if (!overwriteConfirm) return;
+    const pending = overwriteConfirm;
+    setOverwriteConfirm(null);
+    await submitQualification(pending.payload, true);
   };
 
   const selectProps = { openId, setOpenId };
@@ -280,6 +315,15 @@ export function LeadForm({ onResult, onAnalyzing }: Props) {
         </Field>
         <Field label="Company name" delay={2}>
           <input required className="field-input" value={form.companyName} onChange={setInput("companyName")} placeholder="Acme Corp" />
+        </Field>
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0 32px" }}>
+        <Field label="Email" delay={2}>
+          <input required type="email" className="field-input" value={form.email} onChange={setInput("email")} placeholder="jane@acme.com" />
+        </Field>
+        <Field label="Phone (optional)" delay={2}>
+          <input type="tel" className="field-input" value={form.phone} onChange={setInput("phone")} placeholder="+1 555-0100" />
         </Field>
       </div>
 
@@ -347,6 +391,38 @@ export function LeadForm({ onResult, onAnalyzing }: Props) {
           {submitting ? "Analyzing…" : "Analyze Lead"}
         </button>
       </div>
+
+      {overwriteConfirm && (
+        <div
+          role="dialog"
+          aria-labelledby="overwrite-title"
+          style={{
+            marginTop: 24,
+            padding: 20,
+            border: "1px solid rgba(255,255,255,0.12)",
+            borderRadius: 8,
+            background: "rgba(255,255,255,0.03)",
+          }}
+        >
+          <p id="overwrite-title" style={{ margin: "0 0 16px", color: "rgba(240,237,232,0.88)", lineHeight: 1.5 }}>
+            A lead for {overwriteConfirm.companyName} ({overwriteConfirm.email}) already exists in your workspace.
+            Rerun and overwrite the previous qualification?
+          </p>
+          <div style={{ display: "flex", gap: 12 }}>
+            <button type="button" className="btn-primary" onClick={handleOverwriteConfirm} disabled={submitting}>
+              Rerun and overwrite
+            </button>
+            <button
+              type="button"
+              className="btn-primary"
+              style={{ background: "transparent", border: "1px solid rgba(255,255,255,0.2)" }}
+              onClick={() => setOverwriteConfirm(null)}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
     </form>
   );
 }

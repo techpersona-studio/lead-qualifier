@@ -126,7 +126,8 @@ export function Nav({ workspaces, activeOrgId, isAdmin }: NavProps) {
       </div>
 
       <div style={{ display: "flex", alignItems: "center", gap: 32, justifyContent: "flex-end" }}>
-        <Link href="/" style={linkStyle(pathname === "/")}>New Lead</Link>
+        <Link href="/" style={linkStyle(pathname === "/")}>Lead Qualifier</Link>
+        <Link href="/opportunity-map" style={linkStyle(pathname.startsWith("/opportunity-map"))}>Opportunity Map</Link>
         <Link href="/leads" style={linkStyle(pathname === "/leads")}>Leads</Link>
         {isAdmin && (
           <Link href="/settings/members" style={linkStyle(pathname.startsWith("/settings"))}>Team</Link>
