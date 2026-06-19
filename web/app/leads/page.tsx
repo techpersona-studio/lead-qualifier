@@ -57,9 +57,9 @@ export default async function LeadsPage() {
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead>
             <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
-              {["Company", "Grade", "Score", "Contact", "Date"].map((h) => (
+              {["Company", "Grade", "Score", "Contact", "Date", ""].map((h) => (
                 <th
-                  key={h}
+                  key={h || "actions"}
                   style={{
                     padding: "0 0 12px",
                     fontSize: 10,
@@ -67,8 +67,8 @@ export default async function LeadsPage() {
                     letterSpacing: "0.16em",
                     textTransform: "uppercase",
                     color: "rgba(240, 237, 232, 0.6)",
-                    textAlign: h === "Date" ? "right" : "left",
-                    paddingRight: h === "Date" ? 0 : 16,
+                    textAlign: h === "Date" || h === "" ? "right" : "left",
+                    paddingRight: h === "Date" || h === "" ? 0 : 16,
                   }}
                 >
                   {h}

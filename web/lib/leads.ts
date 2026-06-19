@@ -35,6 +35,17 @@ export async function findLeadByEmail(
   };
 }
 
+export async function deleteLead(orgId: string, leadId: string): Promise<void> {
+  const supabase = await createServerClient();
+  const { error } = await supabase
+    .from("leads")
+    .delete()
+    .eq("id", leadId)
+    .eq("org_id", orgId);
+
+  if (error) throw new Error(error.message);
+}
+
 export async function saveLead(
   userId: string,
   orgId: string,

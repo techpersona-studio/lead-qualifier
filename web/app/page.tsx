@@ -65,8 +65,11 @@ export default function Home() {
       >
         <div style={{ width: "100%", maxWidth: 560 }}>
 
-          {view === "form" && (
-            <div key="form" className="view-in">
+          {view !== "result" && (
+            <div
+              style={{ display: view === "form" ? "block" : "none" }}
+              className={view === "form" ? "view-in" : undefined}
+            >
               {/* Header — "LEAD" gets the spotlight focus */}
               <div style={{ marginBottom: 48 }}>
                 <h1

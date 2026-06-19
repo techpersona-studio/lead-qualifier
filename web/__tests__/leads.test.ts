@@ -1,8 +1,9 @@
-import { findLeadByEmail, saveLead } from "@/lib/leads";
+import { deleteLead, findLeadByEmail, saveLead } from "@/lib/leads";
 import type { LeadFormData, QualificationResult } from "@/types/lead";
 
 const mockInsert = jest.fn();
 const mockUpdate = jest.fn();
+const mockDelete = jest.fn();
 const mockSelect = jest.fn();
 const mockSingle = jest.fn();
 const mockMaybeSingle = jest.fn();
@@ -36,6 +37,11 @@ jest.mock("@/lib/supabase/server", () => ({
               single: mockSingle,
             }),
           }),
+        }),
+      }),
+      delete: mockDelete.mockReturnValue({
+        eq: jest.fn().mockReturnValue({
+          eq: jest.fn().mockResolvedValue({ error: null }),
         }),
       }),
       select: jest.fn().mockReturnValue({
@@ -146,5 +152,15 @@ describe("findLeadByEmail", () => {
     const found = await findLeadByEmail("org-1", "new@acme.com");
 
     expect(found).toBeNull();
+  });
+});
+
+describe("deleteLead", () => {
+  beforeEach(() => jest.clearAllMocks());
+
+  it("deletes a lead scoped to the org", async () => {
+    await deleteLead("org-1", "lead-123");
+
+    expect(mockDelete).toHaveBeenCalled();
   });
 });

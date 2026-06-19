@@ -1,5 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { DeleteLeadButton } from "@/components/DeleteLeadButton";
 import type { QualificationResult } from "@/types/lead";
 
 interface Lead {
@@ -73,6 +74,13 @@ export function LeadRow({ lead, href }: { lead: Lead; href: string }) {
       </td>
       <td style={{ padding: "14px 0", fontSize: 12, color: "var(--text-muted)", textAlign: "right" }}>
         {date}
+      </td>
+      <td style={{ padding: "14px 0 14px 16px", textAlign: "right" }}>
+        <DeleteLeadButton
+          leadId={lead.id}
+          companyName={lead.company_name}
+          variant="inline"
+        />
       </td>
     </tr>
   );

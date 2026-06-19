@@ -260,8 +260,34 @@ export function LeadForm({ onResult, onAnalyzing }: Props) {
 
   const submitQualification = async (payload: LeadFormData, overwrite = false) => {
     setSubmitting(true);
-    onAnalyzing(true);
+    let analyzing = false;
+
     try {
+      if (!overwrite) {
+        const checkRes = await fetch("/api/qualify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ...payload, checkOnly: true }),
+        });
+        const checkData = await checkRes.json();
+
+        if (checkRes.status === 409 && checkData.exists) {
+          setOverwriteConfirm({
+            companyName: checkData.companyName,
+            email: checkData.email,
+            payload,
+          });
+          return;
+        }
+
+        if (!checkRes.ok) {
+          throw new Error(checkData.error ?? "Qualification failed");
+        }
+      }
+
+      onAnalyzing(true);
+      analyzing = true;
+
       const res = await fetch("/api/qualify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -270,7 +296,6 @@ export function LeadForm({ onResult, onAnalyzing }: Props) {
       const data = await res.json();
 
       if (res.status === 409 && data.exists) {
-        onAnalyzing(false);
         setOverwriteConfirm({
           companyName: data.companyName,
           email: data.email,
@@ -286,7 +311,9 @@ export function LeadForm({ onResult, onAnalyzing }: Props) {
       onResult(data);
     } finally {
       setSubmitting(false);
-      onAnalyzing(false);
+      if (analyzing) {
+        onAnalyzing(false);
+      }
     }
   };
 
@@ -393,36 +420,56 @@ export function LeadForm({ onResult, onAnalyzing }: Props) {
         </button>
       </div>
 
-      {overwriteConfirm && (
-        <div
-          role="dialog"
-          aria-labelledby="overwrite-title"
-          style={{
-            marginTop: 24,
-            padding: 20,
-            border: "1px solid rgba(255,255,255,0.12)",
-            borderRadius: 8,
-            background: "rgba(255,255,255,0.03)",
-          }}
-        >
-          <p id="overwrite-title" style={{ margin: "0 0 16px", color: "rgba(240,237,232,0.88)", lineHeight: 1.5 }}>
-            A lead for {overwriteConfirm.companyName} ({overwriteConfirm.email}) already exists in your workspace.
-            Rerun and overwrite the previous qualification?
-          </p>
-          <div style={{ display: "flex", gap: 12 }}>
-            <button type="button" className="btn-primary" onClick={handleOverwriteConfirm} disabled={submitting}>
-              Rerun and overwrite
-            </button>
-            <button
-              type="button"
-              className="btn-primary"
-              style={{ background: "transparent", border: "1px solid rgba(255,255,255,0.2)" }}
-              onClick={() => setOverwriteConfirm(null)}
-            >
-              Cancel
-            </button>
+      {overwriteConfirm && createPortal(
+        <>
+          <div
+            onClick={() => setOverwriteConfirm(null)}
+            style={{
+              position: "fixed",
+              inset: 0,
+              zIndex: 99998,
+              background: "rgba(6, 8, 16, 0.72)",
+              cursor: "default",
+            }}
+          />
+          <div
+            role="dialog"
+            aria-labelledby="overwrite-title"
+            aria-modal="true"
+            style={{
+              position: "fixed",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              zIndex: 99999,
+              width: "min(440px, calc(100vw - 48px))",
+              padding: 24,
+              border: "1px solid rgba(255,255,255,0.12)",
+              borderRadius: 8,
+              background: "#0d1120",
+              boxShadow: "0 24px 64px rgba(0,0,0,0.45)",
+            }}
+          >
+            <p id="overwrite-title" style={{ margin: "0 0 16px", color: "rgba(240,237,232,0.88)", lineHeight: 1.5 }}>
+              A lead for {overwriteConfirm.companyName} ({overwriteConfirm.email}) already exists in your workspace.
+              Rerun and overwrite the previous qualification?
+            </p>
+            <div style={{ display: "flex", gap: 12 }}>
+              <button type="button" className="btn-primary" onClick={handleOverwriteConfirm} disabled={submitting}>
+                Rerun and overwrite
+              </button>
+              <button
+                type="button"
+                className="btn-primary"
+                style={{ background: "transparent", border: "1px solid rgba(255,255,255,0.2)" }}
+                onClick={() => setOverwriteConfirm(null)}
+              >
+                Cancel
+              </button>
+            </div>
           </div>
-        </div>
+        </>,
+        document.body,
       )}
     </form>
   );

@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { createServerClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { QualificationResultCard } from "@/components/QualificationResult";
+import { DeleteLeadButton } from "@/components/DeleteLeadButton";
 
 export default async function LeadDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -30,7 +31,7 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
   const admin = createAdminClient();
   const { data: lead } = await admin
     .from("leads")
-    .select("id, org_id, result")
+    .select("id, org_id, company_name, result")
     .eq("id", id)
     .single();
 
@@ -57,6 +58,9 @@ export default async function LeadDetailPage({ params }: { params: Promise<{ id:
       >
         ← Back to leads
       </Link>
+      <div style={{ display: "flex", justifyContent: "flex-end", marginBottom: 24 }}>
+        <DeleteLeadButton leadId={lead.id} companyName={lead.company_name} />
+      </div>
       <QualificationResultCard result={lead.result} />
     </main>
     </>

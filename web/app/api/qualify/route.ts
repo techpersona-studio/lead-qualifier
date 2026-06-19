@@ -8,11 +8,12 @@ export const maxDuration = 60;
 
 interface QualifyRequestBody extends LeadFormData {
   overwrite?: boolean;
+  checkOnly?: boolean;
 }
 
 export async function POST(req: NextRequest) {
   const body: QualifyRequestBody = await req.json();
-  const { overwrite, ...leadData } = body;
+  const { overwrite, checkOnly, ...leadData } = body;
 
   const supabase = await createServerClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -31,6 +32,10 @@ export async function POST(req: NextRequest) {
         },
         { status: 409 },
       );
+    }
+
+    if (checkOnly) {
+      return NextResponse.json({ ok: true });
     }
   }
 

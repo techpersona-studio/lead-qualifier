@@ -146,6 +146,46 @@ describe("POST /api/qualify", () => {
     expect(mockSaveLead).not.toHaveBeenCalled();
   });
 
+  it("returns ok for checkOnly when no duplicate exists without running the agent", async () => {
+    mockGetUser.mockResolvedValue({
+      data: { user: { id: "user-1" } },
+    });
+    mockFindLeadByEmail.mockResolvedValue(null);
+
+    const req = makeRequest({ ...formData, checkOnly: true });
+    req.cookies.set("active_org_id", "org-1");
+
+    const res = await POST(req);
+    const json = await res.json();
+
+    expect(res.status).toBe(200);
+    expect(json.ok).toBe(true);
+    expect(mockTrigger).not.toHaveBeenCalled();
+    expect(mockSaveLead).not.toHaveBeenCalled();
+  });
+
+  it("returns 409 for checkOnly when a duplicate exists without running the agent", async () => {
+    mockGetUser.mockResolvedValue({
+      data: { user: { id: "user-1" } },
+    });
+    mockFindLeadByEmail.mockResolvedValue({
+      id: "lead-existing",
+      companyName: "Acme",
+      email: "jane@acme.com",
+    });
+
+    const req = makeRequest({ ...formData, checkOnly: true });
+    req.cookies.set("active_org_id", "org-1");
+
+    const res = await POST(req);
+    const json = await res.json();
+
+    expect(res.status).toBe(409);
+    expect(json.exists).toBe(true);
+    expect(mockTrigger).not.toHaveBeenCalled();
+    expect(mockSaveLead).not.toHaveBeenCalled();
+  });
+
   it("overwrites an existing lead when overwrite is true", async () => {
     mockGetUser.mockResolvedValue({
       data: { user: { id: "user-1" } },
