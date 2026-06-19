@@ -42,7 +42,7 @@ export default async function OpportunityMapPage() {
           Opportunity map
         </h1>
         <p style={{ fontSize: 15, color: "var(--text-muted)", marginBottom: 40, lineHeight: 1.6 }}>
-          Select a lead and paste the discovery call. We will produce a ranked ICE report you can share with the Owner.
+          Select a lead and add the discovery call. Drop transcript files or paste directly; long conversations are supported.
         </p>
         <OpportunityMapForm leads={leads} />
       </main>

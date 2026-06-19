@@ -5,7 +5,7 @@ import type { OpportunityMapTaskInput } from "../types/opportunity-map.js";
 
 export const generateOpportunityMapTask = task({
   id: "generate-opportunity-map",
-  maxDuration: 90,
+  maxDuration: 120,
   run: async (payload: OpportunityMapTaskInput) => {
     logger.info("Opportunity map payload", {
       companyName: payload.lead.companyName,

@@ -270,6 +270,7 @@ export function LeadForm({ onResult, onAnalyzing }: Props) {
       const data = await res.json();
 
       if (res.status === 409 && data.exists) {
+        onAnalyzing(false);
         setOverwriteConfirm({
           companyName: data.companyName,
           email: data.email,

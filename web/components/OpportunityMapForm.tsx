@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import type { OpportunityMap } from "@/types/opportunity-map";
 
 interface LeadOption {
@@ -15,18 +15,53 @@ interface Props {
   leads: LeadOption[];
 }
 
+const ACCEPTED_EXTENSIONS = [".txt", ".md"];
+const ACCEPTED_TYPES = "text/plain,text/markdown,.txt,.md";
+
+function isAcceptedFile(file: File): boolean {
+  const lowerName = file.name.toLowerCase();
+  return ACCEPTED_EXTENSIONS.some((ext) => lowerName.endsWith(ext));
+}
+
 export function OpportunityMapForm({ leads }: Props) {
   const [leadId, setLeadId] = useState(leads[0]?.id ?? "");
   const [conversation, setConversation] = useState("");
+  const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const readFiles = async (files: FileList | null) => {
+  const readFiles = useCallback(async (files: FileList | File[] | null) => {
     if (!files?.length) return;
-    const chunks = await Promise.all(
-      Array.from(files).map((file) => file.text()),
-    );
+
+    const accepted = Array.from(files).filter(isAcceptedFile);
+    if (accepted.length === 0) {
+      setError("Only .txt and .md files are supported.");
+      return;
+    }
+
+    const chunks = await Promise.all(accepted.map((file) => file.text()));
     setConversation((prev) => [prev, ...chunks].filter(Boolean).join("\n\n").trim());
+    setUploadedFiles((prev) => [...prev, ...accepted.map((file) => file.name)]);
+    setError(null);
+  }, []);
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    if (e.currentTarget.contains(e.relatedTarget as Node)) return;
+    setIsDragging(false);
+  };
+
+  const handleDrop = async (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    await readFiles(e.dataTransfer.files);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -64,6 +99,8 @@ export function OpportunityMapForm({ leads }: Props) {
     );
   }
 
+  const hasContent = conversation.trim().length > 0;
+
   return (
     <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: 32 }}>
       <div>
@@ -86,21 +123,57 @@ export function OpportunityMapForm({ leads }: Props) {
 
       <div>
         <label className="field-label">Call conversation</label>
+        <p style={{ fontSize: 13, color: "var(--text-muted)", marginBottom: 12, lineHeight: 1.5 }}>
+          Paste a transcript or drop context files. Long conversations are supported.
+        </p>
+
+        <div
+          className={`file-drop-zone${isDragging ? " file-drop-zone--active" : ""}${hasContent ? " file-drop-zone--filled" : ""}`}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          onClick={() => fileInputRef.current?.click()}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              fileInputRef.current?.click();
+            }
+          }}
+        >
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept={ACCEPTED_TYPES}
+            multiple
+            hidden
+            onChange={(e) => {
+              void readFiles(e.target.files);
+              e.target.value = "";
+            }}
+          />
+          <p className="file-drop-zone__title">
+            {isDragging ? "Drop files here" : "Drag and drop .txt or .md files"}
+          </p>
+          <p className="file-drop-zone__hint">or click to browse</p>
+          {uploadedFiles.length > 0 && (
+            <ul className="file-drop-zone__files">
+              {uploadedFiles.map((name) => (
+                <li key={name}>{name}</li>
+              ))}
+            </ul>
+          )}
+        </div>
+
         <textarea
           className="field-input"
           value={conversation}
           onChange={(e) => setConversation(e.target.value)}
-          placeholder="Paste the discovery call transcript, or drop .txt / .md files below."
+          placeholder="Paste the discovery call transcript here, or add files above."
           rows={12}
           required
-          style={{ width: "100%", resize: "vertical", minHeight: 220 }}
-        />
-        <input
-          type="file"
-          accept=".txt,.md,text/plain,text/markdown"
-          multiple
-          onChange={(e) => readFiles(e.target.files)}
-          style={{ marginTop: 12, fontSize: 13, color: "var(--text-secondary)" }}
+          style={{ width: "100%", resize: "vertical", minHeight: 220, marginTop: 16 }}
         />
       </div>
 

@@ -269,6 +269,68 @@ body::before {
   margin-bottom: 10px;
 }
 
+/* ── File drop zone (opportunity map) ────────────── */
+.file-drop-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 28px 24px;
+  border-radius: 8px;
+  border: 1px dashed rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.02);
+  cursor: pointer;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.file-drop-zone:hover,
+.file-drop-zone:focus-visible {
+  border-color: rgba(184, 178, 248, 0.45);
+  background: rgba(184, 178, 248, 0.06);
+  outline: none;
+}
+
+.file-drop-zone--active {
+  border-color: rgba(184, 178, 248, 0.75);
+  background: rgba(184, 178, 248, 0.1);
+}
+
+.file-drop-zone--filled {
+  padding-bottom: 20px;
+}
+
+.file-drop-zone__title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.file-drop-zone__hint {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.file-drop-zone__files {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.file-drop-zone__files li {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(184, 178, 248, 0.12);
+  color: rgba(210, 205, 255, 0.95);
+}
+
 /* ── Page fade-in ────────────────────────────────── */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(16px); }

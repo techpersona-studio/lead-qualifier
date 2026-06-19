@@ -1,4 +1,5 @@
 import { createServerClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { normalizeEmail } from "@/lib/lead-email";
 import type { LeadFormData, QualificationResult } from "@/types/lead";
 
@@ -12,7 +13,9 @@ export async function findLeadByEmail(
   orgId: string,
   email: string,
 ): Promise<ExistingLead | null> {
-  const supabase = await createServerClient();
+  // Use the service-role client for lookups. The user-scoped client can miss rows
+  // when auth.uid() is unavailable in the API route, which would skip the dedup gate.
+  const supabase = createAdminClient();
   const normalized = normalizeEmail(email);
 
   const { data, error } = await supabase

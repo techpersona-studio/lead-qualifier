@@ -1,15 +1,28 @@
-import { saveLead } from "@/lib/leads";
+import { findLeadByEmail, saveLead } from "@/lib/leads";
 import type { LeadFormData, QualificationResult } from "@/types/lead";
 
 const mockInsert = jest.fn();
 const mockUpdate = jest.fn();
 const mockSelect = jest.fn();
 const mockSingle = jest.fn();
-const mockEq = jest.fn();
 const mockMaybeSingle = jest.fn();
 
+jest.mock("@/lib/supabase/admin", () => ({
+  createAdminClient: jest.fn(() => ({
+    from: () => ({
+      select: jest.fn().mockReturnValue({
+        eq: jest.fn().mockReturnValue({
+          eq: jest.fn().mockReturnValue({
+            maybeSingle: mockMaybeSingle,
+          }),
+        }),
+      }),
+    }),
+  })),
+}));
+
 jest.mock("@/lib/supabase/server", () => ({
-  createServerClient: jest.fn(() => ({
+  createServerClient: jest.fn(async () => ({
     from: () => ({
       insert: mockInsert.mockReturnValue({
         select: mockSelect.mockReturnValue({
@@ -106,5 +119,32 @@ describe("saveLead", () => {
     );
     expect(mockInsert).not.toHaveBeenCalled();
     expect(saved).toEqual({ id: "lead-existing" });
+  });
+});
+
+describe("findLeadByEmail", () => {
+  beforeEach(() => jest.clearAllMocks());
+
+  it("returns a lead when the normalized email exists in the org", async () => {
+    mockMaybeSingle.mockResolvedValue({
+      data: { id: "lead-1", company_name: "Acme", email: "jane@acme.com" },
+      error: null,
+    });
+
+    const found = await findLeadByEmail("org-1", "  Jane@Acme.COM ");
+
+    expect(found).toEqual({
+      id: "lead-1",
+      companyName: "Acme",
+      email: "jane@acme.com",
+    });
+  });
+
+  it("returns null when no lead matches", async () => {
+    mockMaybeSingle.mockResolvedValue({ data: null, error: null });
+
+    const found = await findLeadByEmail("org-1", "new@acme.com");
+
+    expect(found).toBeNull();
   });
 });

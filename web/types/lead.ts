@@ -15,6 +15,8 @@ export interface QualificationResult {
   score: number;
   grade: "A" | "B" | "C" | "D";
   summary: string;
+  strengths?: string[];
+  watchouts?: string[];
   fit: number;
   intent: number;
   budget: number;

@@ -384,6 +384,53 @@ export function QualificationResultCard({ result, onReset }: Props) {
         </p>
       </div>
 
+      {(result.strengths?.length || result.watchouts?.length) ? (
+        <div className="result-reveal result-reveal-2" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+          {result.strengths?.length ? (
+            <div>
+              <div
+                style={{
+                  fontSize: 9,
+                  fontWeight: 700,
+                  letterSpacing: "0.22em",
+                  textTransform: "uppercase",
+                  color: "rgba(240,237,232,0.28)",
+                  marginBottom: 14,
+                }}
+              >
+                Strengths
+              </div>
+              <ul style={{ margin: 0, paddingLeft: 18, color: "rgba(240,237,232,0.72)", lineHeight: 1.7 }}>
+                {result.strengths.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+          {result.watchouts?.length ? (
+            <div>
+              <div
+                style={{
+                  fontSize: 9,
+                  fontWeight: 700,
+                  letterSpacing: "0.22em",
+                  textTransform: "uppercase",
+                  color: "rgba(240,237,232,0.28)",
+                  marginBottom: 14,
+                }}
+              >
+                Watchouts
+              </div>
+              <ul style={{ margin: 0, paddingLeft: 18, color: "rgba(240,237,232,0.72)", lineHeight: 1.7 }}>
+                {result.watchouts.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+        </div>
+      ) : null}
+
       {/* Recommended Action — the headline decision */}
       {result.recommendedAction && (
         <div className="result-reveal result-reveal-2">

@@ -22,7 +22,7 @@ export default function Home() {
   };
 
   const handleAnalyzing = (v: boolean) => {
-    if (v) setView("analyzing");
+    setView(v ? "analyzing" : "form");
   };
 
   const handleReset = () => {
