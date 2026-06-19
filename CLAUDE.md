@@ -76,7 +76,7 @@ TRIGGER_PROJECT_REF=proj_...
 
 The system prompt and scoring rubric live in code, not in separate docs:
 
-- **`trigger/prompts/lead-qualifier.ts`** — the live system prompt the model runs on, bundled into the task at deploy time. Edit this to change scoring.
+- **`trigger/prompts/lead-qualifier-2.ts`** — the live system prompt the model runs on, bundled into the task at deploy time. Edit this to change scoring.
 - **`trigger/lib/website.ts`** — fetches and extracts the lead's website text, fed into the prompt for context.
 - **`trigger/lib/scorer.ts`** + **`trigger/types/lead.ts`** — output schema and Zod validation. Update if the result shape changes.
 - **`docs/memory/scoring-philosophy.md`** — the rationale behind the scoring (effort-to-value budget, size-inferred authority, agency positioning). Read this before changing scoring.

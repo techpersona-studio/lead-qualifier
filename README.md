@@ -124,7 +124,7 @@ The scoring logic lives in code:
 
 | What | Where |
 |------|-------|
-| System prompt the model runs on | `trigger/prompts/lead-qualifier.ts` |
+| System prompt the model runs on | `trigger/prompts/lead-qualifier-2.ts` |
 | Website scrape feeding context | `trigger/lib/website.ts` |
 | Output schema and validation | `trigger/lib/scorer.ts`, `trigger/types/lead.ts` |
 | The rationale behind the scoring | `docs/memory/scoring-philosophy.md` |

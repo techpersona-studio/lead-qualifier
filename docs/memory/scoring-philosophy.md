@@ -1,6 +1,6 @@
 # Lead scoring philosophy
 
-How this agency decides whether a lead is worth sales time. These principles drive the live system prompt in [`trigger/prompts/lead-qualifier.ts`](../../trigger/prompts/lead-qualifier.ts). That `.ts` is the single source of truth for scoring; this doc holds the rationale behind it.
+How this agency decides whether a lead is worth sales time. These principles drive the live system prompt in [`trigger/prompts/lead-qualifier-2.ts`](../../trigger/prompts/lead-qualifier-2.ts). That `.ts` is the single source of truth for scoring; this doc holds the rationale behind it.
 
 ## Who we are
 
@@ -52,7 +52,7 @@ The website is optional on the form. When it's present, it's the ground truth: r
 
 | Concern | File |
 |---------|------|
-| System prompt the model runs on (source of truth) | `trigger/prompts/lead-qualifier.ts` |
+| System prompt the model runs on (source of truth) | `trigger/prompts/lead-qualifier-2.ts` |
 | Website scrape feeding context | `trigger/lib/website.ts` |
 | Output schema + validation | `trigger/lib/scorer.ts`, `trigger/types/lead.ts` |
 

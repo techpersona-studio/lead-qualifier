@@ -1,5 +1,10 @@
 # Lead Qualifier — Domain Glossary
 
+## Agent
+
+A named analysis configuration the app can run against an input. Each agent defines its own input, prompt, and output schema; a single generic task runs whichever agent is selected. The **Lead Qualifier** and the **Opportunity Map Generator** are agents.
+_Avoid_: "app" or "model" when you mean a specific agent.
+
 ## Org
 
 A workspace that groups users and their leads. All leads belong to an org, not directly to a user. One org maps to one paying customer (a business using the qualifier tool).
