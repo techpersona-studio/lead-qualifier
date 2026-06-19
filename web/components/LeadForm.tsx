@@ -261,6 +261,7 @@ export function LeadForm({ onResult, onAnalyzing }: Props) {
   const submitQualification = async (payload: LeadFormData, overwrite = false) => {
     setSubmitting(true);
     let analyzing = false;
+    let resolved = false;
 
     try {
       if (!overwrite) {
@@ -309,9 +310,13 @@ export function LeadForm({ onResult, onAnalyzing }: Props) {
       }
 
       onResult(data);
+      resolved = true;
     } finally {
       setSubmitting(false);
-      if (analyzing) {
+      // Only drop back to the form if we never reached the result view.
+      // onResult() already moved the view to "result"; resetting analyzing
+      // here would overwrite that and bounce the user back to the form.
+      if (analyzing && !resolved) {
         onAnalyzing(false);
       }
     }
