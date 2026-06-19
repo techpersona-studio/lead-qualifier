@@ -191,94 +191,60 @@ export function OpportunityMapForm({ leads }: Props) {
 export function OpportunityMapReport({ map }: { map: OpportunityMap }) {
   return (
     <article className="opportunity-map-report">
-      <header style={{ marginBottom: 40 }}>
-        <p style={{ fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 12 }}>
-          Opportunity map
-        </p>
-        <h1 style={{ fontSize: 32, fontWeight: 700, marginBottom: 16, color: "var(--text-primary)" }}>
-          {map.client.businessName}
-        </h1>
-        <p style={{ fontSize: 16, lineHeight: 1.6, color: "rgba(240,237,232,0.88)", marginBottom: 20 }}>
-          {map.summary}
-        </p>
-        <div
-          style={{
-            padding: 20,
-            borderRadius: 8,
-            border: "1px solid rgba(180,170,255,0.25)",
-            background: "rgba(180,170,255,0.08)",
-          }}
-        >
-          <p style={{ fontSize: 11, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 8 }}>
-            Recommended first move
-          </p>
-          <p style={{ margin: 0, fontSize: 15, lineHeight: 1.6, color: "var(--text-primary)" }}>
-            {map.recommendedFirstMove}
-          </p>
+      <header className="omr-header">
+        <p className="omr-kicker">TechPersona Studio · Opportunity map</p>
+        <h1 className="omr-title">{map.client.businessName}</h1>
+        <p className="omr-summary">{map.summary}</p>
+        <div className="omr-first-move">
+          <p className="omr-label">Recommended first move</p>
+          <p className="omr-first-move-text">{map.recommendedFirstMove}</p>
         </div>
       </header>
 
-      <section style={{ display: "flex", flexDirection: "column", gap: 24 }}>
-        {map.opportunities.map((opportunity) => (
+      <section className="omr-opportunities">
+        {map.opportunities.map((opportunity, index) => (
           <div
             key={opportunity.rank}
-            style={{
-              padding: 24,
-              borderRadius: 8,
-              border: "1px solid rgba(255,255,255,0.08)",
-              background: "rgba(255,255,255,0.02)",
-            }}
+            className={`omr-card${index % 2 === 1 ? " omr-card--alt" : ""}`}
           >
-            <div style={{ display: "flex", justifyContent: "space-between", gap: 16, marginBottom: 12, flexWrap: "wrap" }}>
-              <h2 style={{ margin: 0, fontSize: 20, color: "var(--text-primary)" }}>
+            <div className="omr-card-head">
+              <h2 className="omr-card-title">
                 #{opportunity.rank} {opportunity.title}
               </h2>
-              <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-                <span style={{ fontSize: 13, color: "var(--text-secondary)" }}>ICE {opportunity.iceScore}/10</span>
-                <span
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 700,
-                    letterSpacing: "0.12em",
-                    padding: "4px 10px",
-                    borderRadius: 999,
-                    background: "rgba(180,170,255,0.15)",
-                    color: "rgba(210,205,255,0.95)",
-                  }}
-                >
+              <div className="omr-card-meta">
+                <span className="omr-ice">ICE {opportunity.iceScore}/10</span>
+                <span className={`omr-grade omr-grade--${opportunity.grade.toLowerCase()}`}>
                   {opportunity.grade}
                 </span>
               </div>
             </div>
 
-            <p style={{ margin: "0 0 12px", color: "rgba(240,237,232,0.75)", lineHeight: 1.6 }}>
-              <strong style={{ color: "var(--text-primary)" }}>Problem:</strong> {opportunity.problem}
+            <p className="omr-field">
+              <strong>Problem:</strong> {opportunity.problem}
             </p>
-            <p style={{ margin: "0 0 12px", color: "rgba(240,237,232,0.75)", lineHeight: 1.6 }}>
-              <strong style={{ color: "var(--text-primary)" }}>Proposed service:</strong> {opportunity.proposedService}
+            <p className="omr-field">
+              <strong>Proposed service:</strong> {opportunity.proposedService}
             </p>
-            <p style={{ margin: "0 0 12px", color: "rgba(240,237,232,0.88)", lineHeight: 1.6 }}>
-              <strong style={{ color: "var(--text-primary)" }}>Expected outcome:</strong> {opportunity.expectedOutcome}
+            <p className="omr-field omr-field--emphasis">
+              <strong>Expected outcome:</strong> {opportunity.expectedOutcome}
             </p>
-            <p style={{ margin: "0 0 12px", color: "rgba(240,237,232,0.75)", lineHeight: 1.6 }}>
-              <strong style={{ color: "var(--text-primary)" }}>Effort:</strong> {opportunity.effort}
+            <p className="omr-field">
+              <strong>Effort:</strong> {opportunity.effort}
             </p>
-            <p style={{ margin: "0 0 12px", color: "rgba(240,237,232,0.75)", lineHeight: 1.6 }}>
-              <strong style={{ color: "var(--text-primary)" }}>Risks:</strong> {opportunity.risks}
+            <p className="omr-field">
+              <strong>Risks:</strong> {opportunity.risks}
             </p>
-            <p style={{ margin: 0, color: "rgba(240,237,232,0.88)", lineHeight: 1.6 }}>
-              <strong style={{ color: "var(--text-primary)" }}>Next action:</strong> {opportunity.nextAction}
+            <p className="omr-field omr-field--emphasis">
+              <strong>Next action:</strong> {opportunity.nextAction}
             </p>
           </div>
         ))}
       </section>
 
       {map.flags.length > 0 && (
-        <section style={{ marginTop: 32 }}>
-          <h3 style={{ fontSize: 12, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 12 }}>
-            Flags
-          </h3>
-          <ul style={{ margin: 0, paddingLeft: 18, color: "rgba(240,237,232,0.75)" }}>
+        <section className="omr-flags">
+          <h3 className="omr-label">Flags</h3>
+          <ul className="omr-flag-list">
             {map.flags.map((flag) => (
               <li key={flag}>{flag}</li>
             ))}

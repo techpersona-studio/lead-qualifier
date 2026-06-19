@@ -34,14 +34,8 @@ export default async function OpportunityMapDetailPage({ params }: Props) {
   if (!saved) notFound();
 
   return (
-    <>
-      <div aria-hidden="true" className="page-spotlight" />
-      <main
-        className="opportunity-map-page"
-        style={{ padding: "144px 40px 80px", maxWidth: 900, margin: "0 auto", position: "relative", zIndex: 1 }}
-      >
-        <OpportunityMapReportActions map={saved.result} />
-      </main>
-    </>
+    <main className="opportunity-map-page">
+      <OpportunityMapReportActions map={saved.result} />
+    </main>
   );
 }

@@ -1,4 +1,5 @@
 import { createServerClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import type { LeadFormData, QualificationResult } from "@/types/lead";
 import type { OpportunityMap, SavedOpportunityMap } from "@/types/opportunity-map";
 
@@ -87,6 +88,34 @@ export async function saveOpportunityMap(
 
   if (error) throw new Error(error.message);
   return { id: data.id };
+}
+
+export async function listOpportunityMapsForLead(
+  orgId: string,
+  leadId: string,
+): Promise<SavedOpportunityMap[]> {
+  // Use the admin client to match the lead detail page, which can't rely on
+  // auth.uid() being present in the RSC request.
+  const supabase = createAdminClient();
+
+  const { data, error } = await supabase
+    .from("opportunity_maps")
+    .select("id, lead_id, conversation, result, top_ice, top_grade, created_at")
+    .eq("org_id", orgId)
+    .eq("lead_id", leadId)
+    .order("created_at", { ascending: false });
+
+  if (error) throw new Error(error.message);
+
+  return (data ?? []).map((row) => ({
+    id: row.id,
+    leadId: row.lead_id,
+    conversation: row.conversation,
+    result: row.result as OpportunityMap,
+    topIce: Number(row.top_ice ?? 0),
+    topGrade: row.top_grade ?? "",
+    createdAt: row.created_at,
+  }));
 }
 
 export async function getOpportunityMapById(

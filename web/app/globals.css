@@ -475,28 +475,344 @@ body::before {
   animation: viewIn 400ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
+/* ── Opportunity map report (TechPersona branding) ── */
+.opportunity-map-page {
+  --omr-paper: #f2ecdf;
+  --omr-paper-deep: #e9e0cd;
+  --omr-ink: #1a1813;
+  --omr-ink-soft: #534d40;
+  --omr-ink-faint: #8a8270;
+  --omr-accent: #ce3a18;
+  --omr-accent-deep: #a82c0f;
+  --omr-hair: rgba(26, 24, 19, 0.14);
+
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  padding: 144px 40px 80px;
+  max-width: 980px;
+  margin: 0 auto;
+  background: var(--omr-paper);
+  color: var(--omr-ink-soft);
+}
+
+.opportunity-map-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.opportunity-map-page .omr-actions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.opportunity-map-page .btn-brand {
+  position: relative;
+  width: auto;
+  height: auto;
+  padding: 14px 24px;
+  background: var(--omr-accent);
+  border: 2px solid var(--omr-ink);
+  color: var(--omr-paper);
+  font-family: var(--font-hanken), sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  cursor: pointer;
+  border-radius: 0;
+  box-shadow: 6px 6px 0 var(--omr-ink);
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease,
+    background 120ms ease;
+}
+
+.opportunity-map-page .btn-brand:hover {
+  background: var(--omr-accent-deep);
+  transform: translate(-3px, -3px);
+  box-shadow: 9px 9px 0 var(--omr-ink);
+}
+
+.opportunity-map-page .btn-brand:active {
+  transform: translate(0, 0);
+  box-shadow: 4px 4px 0 var(--omr-ink);
+}
+
+.opportunity-map-report {
+  --omr-paper: #f2ecdf;
+  --omr-paper-deep: #e9e0cd;
+  --omr-ink: #1a1813;
+  --omr-ink-soft: #534d40;
+  --omr-ink-faint: #8a8270;
+  --omr-accent: #ce3a18;
+  --omr-accent-deep: #a82c0f;
+  --omr-hair: rgba(26, 24, 19, 0.14);
+
+  position: relative;
+  z-index: 1;
+  background: var(--omr-paper);
+  color: var(--omr-ink-soft);
+  font-family: var(--font-hanken), sans-serif;
+  font-size: 15px;
+  line-height: 1.65;
+  border: 2px solid var(--omr-ink);
+  box-shadow: 18px 18px 0 var(--omr-ink);
+  padding: 48px 40px;
+}
+
+.opportunity-map-page .opportunity-map-report {
+  border: none;
+  box-shadow: none;
+  padding: 0;
+}
+
+.opportunity-map-report::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+.opportunity-map-report > * {
+  position: relative;
+  z-index: 1;
+}
+
+.opportunity-map-report .omr-kicker,
+.opportunity-map-report .omr-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--omr-ink-faint);
+}
+
+.opportunity-map-report .omr-kicker {
+  margin-bottom: 16px;
+}
+
+.opportunity-map-report .omr-title {
+  margin: 0 0 16px;
+  font-family: var(--font-fraunces), serif;
+  font-size: clamp(28px, 5vw, 40px);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  color: var(--omr-ink);
+}
+
+.opportunity-map-report .omr-summary {
+  margin: 0 0 24px;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--omr-ink-soft);
+}
+
+.opportunity-map-report .omr-first-move {
+  padding: 20px 24px;
+  border: 2px solid var(--omr-ink);
+  background: var(--omr-paper-deep);
+  box-shadow: 6px 6px 0 var(--omr-ink);
+}
+
+.opportunity-map-report .omr-first-move .omr-label {
+  margin-bottom: 8px;
+  color: var(--omr-accent);
+}
+
+.opportunity-map-report .omr-first-move-text {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--omr-ink);
+}
+
+.opportunity-map-report .omr-header {
+  margin-bottom: 40px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--omr-hair);
+}
+
+.opportunity-map-report .omr-opportunities {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.opportunity-map-report .omr-card {
+  padding: 24px;
+  border: 2px solid var(--omr-ink);
+  background: var(--omr-paper);
+  box-shadow: 6px 6px 0 var(--omr-ink);
+}
+
+.opportunity-map-report .omr-card--alt {
+  background: var(--omr-paper-deep);
+}
+
+.opportunity-map-report .omr-card-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.opportunity-map-report .omr-card-title {
+  margin: 0;
+  flex: 1 1 240px;
+  font-family: var(--font-fraunces), serif;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--omr-ink);
+}
+
+.opportunity-map-report .omr-card-meta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.opportunity-map-report .omr-ice {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--omr-ink-faint);
+}
+
+.opportunity-map-report .omr-grade {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  border: 2px solid var(--omr-ink);
+}
+
+.opportunity-map-report .omr-grade--a {
+  background: var(--omr-accent);
+  color: var(--omr-paper);
+}
+
+.opportunity-map-report .omr-grade--b {
+  background: var(--omr-paper);
+  color: var(--omr-ink);
+}
+
+.opportunity-map-report .omr-grade--c,
+.opportunity-map-report .omr-grade--d {
+  background: transparent;
+  color: var(--omr-ink-faint);
+  border-color: var(--omr-hair);
+}
+
+.opportunity-map-report .omr-field {
+  margin: 0 0 12px;
+  color: var(--omr-ink-soft);
+}
+
+.opportunity-map-report .omr-field:last-child {
+  margin-bottom: 0;
+}
+
+.opportunity-map-report .omr-field strong {
+  color: var(--omr-ink);
+  font-weight: 600;
+}
+
+.opportunity-map-report .omr-field--emphasis {
+  color: var(--omr-ink);
+}
+
+.opportunity-map-report .omr-flags {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--omr-hair);
+}
+
+.opportunity-map-report .omr-flags .omr-label {
+  margin-bottom: 12px;
+}
+
+.opportunity-map-report .omr-flag-list {
+  margin: 0;
+  padding-left: 20px;
+  color: var(--omr-ink-soft);
+}
+
+.opportunity-map-report .omr-flag-list li + li {
+  margin-top: 8px;
+}
+
+@media (max-width: 640px) {
+  .opportunity-map-page {
+    padding: 120px 20px 64px;
+  }
+
+  .opportunity-map-report {
+    padding: 32px 24px;
+  }
+}
+
 @media print {
   nav,
   .no-print,
-  .page-spotlight {
+  .page-spotlight,
+  body::after {
     display: none !important;
   }
 
   body {
-    background: #fff !important;
-    color: #111 !important;
+    background: #f2ecdf !important;
+    color: #534d40 !important;
+  }
+
+  body::before {
+    opacity: 0.04 !important;
+    mix-blend-mode: multiply !important;
   }
 
   main.opportunity-map-page {
     padding: 0 !important;
     max-width: none !important;
+    min-height: auto !important;
+    background: #f2ecdf !important;
   }
 
-  .opportunity-map-report,
-  .opportunity-map-report * {
-    color: #111 !important;
-    background: transparent !important;
-    border-color: #ccc !important;
+  .opportunity-map-page::before {
+    display: none !important;
+  }
+
+  .opportunity-map-report {
+    border: none !important;
     box-shadow: none !important;
+    padding: 0 !important;
+  }
+
+  .opportunity-map-report .omr-card,
+  .opportunity-map-report .omr-first-move {
+    box-shadow: none !important;
+    break-inside: avoid;
   }
 }

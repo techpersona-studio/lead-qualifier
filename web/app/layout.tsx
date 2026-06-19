@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Syne, Geist_Mono } from "next/font/google";
+import { Syne, Geist_Mono, Fraunces, Hanken_Grotesk } from "next/font/google";
 import { cookies } from "next/headers";
 import { Nav } from "@/components/Nav";
 import { createServerClient } from "@/lib/supabase/server";
@@ -15,6 +15,19 @@ const syne = Syne({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+});
+
+const hankenGrotesk = Hanken_Grotesk({
+  variable: "--font-hanken",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -66,7 +79,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${syne.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${syne.variable} ${geistMono.variable} ${fraunces.variable} ${hankenGrotesk.variable} h-full antialiased`}
     >
       <body className="h-full" suppressHydrationWarning>
         <Nav workspaces={workspaces} activeOrgId={activeOrgId} isAdmin={isAdmin} />

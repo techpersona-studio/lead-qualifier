@@ -12,8 +12,8 @@ export function OpportunityMapReportActions({ map }: Props) {
 
   return (
     <>
-      <div className="no-print" style={{ display: "flex", gap: 12, marginBottom: 32 }}>
-        <button type="button" className="btn-primary" onClick={handlePrint}>
+      <div className="no-print omr-actions">
+        <button type="button" className="btn-brand" onClick={handlePrint}>
           Download PDF
         </button>
       </div>
